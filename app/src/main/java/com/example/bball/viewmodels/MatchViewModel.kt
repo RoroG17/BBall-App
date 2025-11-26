@@ -22,6 +22,8 @@ class MatchViewModel : ViewModel() {
     var state: MatchUiState by mutableStateOf(MatchUiState.Loading)
         private set
 
+    var idSeason : Int by mutableStateOf(0)
+
     init {
         getListMatch()
     }
@@ -39,5 +41,12 @@ class MatchViewModel : ViewModel() {
                 MatchUiState.Error
             }
         }
+    }
+
+    fun getMatchesBySeason(matches : List<Match>) {
+        TODO("Voir la récupération de la saison dans l'appel API")
+//        matches.filter { match ->
+//            match.idSaison = idSeason
+//        }
     }
 }

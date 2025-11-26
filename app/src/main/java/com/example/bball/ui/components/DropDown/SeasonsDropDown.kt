@@ -16,22 +16,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.bball.R
+import com.example.bball.viewmodels.MatchViewModel
 
 @Composable
-fun DropDownSeasons() {
+fun DropDownSeasons(vm: MatchViewModel) {
 
     val isDropDownExpanded = remember {
         mutableStateOf(false)
     }
 
     val usernames = listOf("2024-2025", "2025-2026")
-
-    val itemPosition = remember {
-        mutableStateOf(usernames.size - 1)
-    }
-
     Column {
-
         Box {
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -40,7 +35,7 @@ fun DropDownSeasons() {
                     isDropDownExpanded.value = true
                 }
             ) {
-                Text(text = usernames[itemPosition.value])
+                Text(text = usernames[vm.idSeason])
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = "DropDown Icon"
@@ -57,7 +52,7 @@ fun DropDownSeasons() {
                     },
                         onClick = {
                             isDropDownExpanded.value = false
-                            itemPosition.value = index
+                            vm.idSeason = index
                         })
                 }
             }
