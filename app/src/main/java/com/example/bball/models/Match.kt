@@ -2,7 +2,6 @@ package com.example.bball.models
 
 import kotlinx.serialization.Serializable
 
-@Serializable
 data class Match (
     val idMatch: Int,
     val numero: Int,

@@ -12,9 +12,8 @@ import kotlinx.coroutines.launch
 
 
 sealed interface MatchUiState {
-    //data class Success(val matchs: List<Match>) : MatchUiState
+    data class Success(val matchs: List<Match>) : MatchUiState
 
-    object Success : MatchUiState
     object Error : MatchUiState
     object Loading : MatchUiState
 }
@@ -33,8 +32,7 @@ class MatchViewModel : ViewModel() {
             state = MatchUiState.Loading
             state = try {
                 val dataList = MatchApi.retrofitService.getMatchs()
-                Log.d("Response API", dataList.size.toString())
-                MatchUiState.Success
+                MatchUiState.Success(dataList)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("API_ERROR", "Erreur API: ${e.message}")
