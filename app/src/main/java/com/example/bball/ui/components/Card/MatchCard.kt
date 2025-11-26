@@ -21,13 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.bball.R
 import com.example.bball.models.Match
-import com.example.bball.models.sampleMatches
 import com.example.bball.ui.theme.Primary
+import com.example.bball.viewmodels.MatchUiState
+import com.example.bball.viewmodels.MatchViewModel
+import org.w3c.dom.Text
 
 @Composable
 fun MatchCard(
@@ -51,7 +54,7 @@ fun MatchCard(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Journée ${match.numero} - ${match.formattedDate}",
+                text = "Journée ${match.numero} - ${match.dateMatch}",
                 color = Color.White,
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
@@ -104,14 +107,41 @@ fun MatchCard(
     }
 }
 
+
 @Composable
-fun ListMatch () {
-    LazyColumn {
-        items(sampleMatches) { match ->
-            MatchCard(
-                match = match,
-                onClick = { id -> println("Match $id cliqué") }
-            )
+fun ListMatch(state: MatchUiState) {
+    when (state) {
+        MatchUiState.Error -> {
+            ErrorScreen()
         }
+        MatchUiState.Loading -> {
+            LoadingScreen()
+        }
+        MatchUiState.Success -> {
+            Text("Ok")
+        }
+    }
+}
+
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Image(
+        modifier = modifier.size(200.dp),
+        painter = painterResource(R.drawable.loading_img),
+        contentDescription = "Loading"
+    )
+}
+
+@Composable
+fun ErrorScreen(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
+        )
+        Text(text = "Connexion error", modifier = Modifier.padding(16.dp))
     }
 }

@@ -1,5 +1,6 @@
 package com.example.bball.ui.components.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,12 +24,13 @@ import androidx.compose.ui.unit.dp
 import com.example.bball.R
 import com.example.bball.ui.components.Card.ListMatch
 import com.example.bball.ui.components.DropDown.DropDownSeasons
+import com.example.bball.viewmodels.MatchViewModel
 
 @Composable
-fun CalendarScreen() {
+fun CalendarScreen(vm: MatchViewModel = MatchViewModel()) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         DropDownSeasons()
-        ListMatch()
+        ListMatch(state = vm.state)
     }
 }
 

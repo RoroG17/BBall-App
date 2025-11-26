@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.bball.ui.components.Chart.SimpleBarChart
 
 @Composable
 fun PlayerScreen() {
@@ -16,6 +17,8 @@ fun PlayerScreen() {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text(text = "Bienvenu sur votre espace", style = MaterialTheme.typography.headlineMedium)
     }
+
+    SimpleBarChart(listOf(20f, 37f, 12f))
 }
 
 
