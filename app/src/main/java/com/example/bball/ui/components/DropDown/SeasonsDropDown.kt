@@ -25,7 +25,7 @@ fun DropDownSeasons(vm: MatchViewModel) {
         mutableStateOf(false)
     }
 
-    val usernames = listOf("2024-2025", "2025-2026")
+    val seasons = listOf("1", "2")
     Column {
         Box {
             Row(
@@ -35,7 +35,7 @@ fun DropDownSeasons(vm: MatchViewModel) {
                     isDropDownExpanded.value = true
                 }
             ) {
-                Text(text = usernames[vm.idSeason])
+                Text(text = seasons[vm.idSeason])
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = "DropDown Icon"
@@ -46,7 +46,7 @@ fun DropDownSeasons(vm: MatchViewModel) {
                 onDismissRequest = {
                     isDropDownExpanded.value = false
                 }) {
-                usernames.forEachIndexed { index, username ->
+                seasons.forEachIndexed { index, username ->
                     DropdownMenuItem(text = {
                         Text(text = username)
                     },

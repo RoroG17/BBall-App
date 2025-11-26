@@ -12,6 +12,7 @@ data class Match (
     val scoreExt: Int,
     val logoExt: String,
     val equipeExt: String,
+    val idSaison: Int,
     ) {
 
     fun getScore(): String {
@@ -29,7 +30,8 @@ val sampleMatches = listOf(
         scoreDom = 85,
         scoreExt = 78,
         logoExt = "logo_ext_1.png",
-        equipeExt = "Paris"
+        equipeExt = "Paris",
+        idSaison = 1
     ),
     Match(
         idMatch = 2,
@@ -40,7 +42,8 @@ val sampleMatches = listOf(
         scoreDom = 92,
         scoreExt = 88,
         logoExt = "logo_ext_2.png",
-        equipeExt = "Marseille"
+        equipeExt = "Marseille",
+        idSaison = 1
     ),
     Match(
         idMatch = 3,
@@ -51,7 +54,8 @@ val sampleMatches = listOf(
         scoreDom = 76,
         scoreExt = 80,
         logoExt = "logo_ext_3.png",
-        equipeExt = "Nice"
+        equipeExt = "Nice",
+        idSaison = 1
     ),
     Match(
         idMatch = 4,
@@ -62,7 +66,8 @@ val sampleMatches = listOf(
         scoreDom = 101,
         scoreExt = 95,
         logoExt = "logo_ext_4.png",
-        equipeExt = "Lille"
+        equipeExt = "Lille",
+        idSaison = 1
     ),
     Match(
         idMatch = 5,
@@ -73,6 +78,7 @@ val sampleMatches = listOf(
         scoreDom = 88,
         scoreExt = 90,
         logoExt = "logo_ext_5.png",
-        equipeExt = "Montpellier"
+        equipeExt = "Montpellier",
+        idSaison = 1
     )
 )

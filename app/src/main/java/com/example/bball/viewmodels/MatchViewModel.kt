@@ -44,9 +44,8 @@ class MatchViewModel : ViewModel() {
     }
 
     fun getMatchesBySeason(matches : List<Match>) {
-        TODO("Voir la récupération de la saison dans l'appel API")
-//        matches.filter { match ->
-//            match.idSaison = idSeason
-//        }
+        matches.filter { match ->
+           match.idSaison == idSeason
+        }
     }
 }
