@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.bball.R
 import com.example.bball.models.Match
+import com.example.bball.ui.components.DropDown.DropDownSeasons
 import com.example.bball.ui.theme.Primary
 import com.example.bball.viewmodels.MatchUiState
 import com.example.bball.viewmodels.MatchViewModel
@@ -112,8 +114,8 @@ fun MatchCard(
 
 
 @Composable
-fun ListMatch(state: MatchUiState) {
-    when (state) {
+fun ListMatch(vm: MatchViewModel) {
+    when (vm.state) {
         MatchUiState.Error -> {
             ErrorScreen()
         }
@@ -121,7 +123,8 @@ fun ListMatch(state: MatchUiState) {
             LoadingScreen()
         }
         is MatchUiState.Success -> {
-            MatchList(state.matchs)
+            DropDownSeasons(vm, (vm.state as MatchUiState.Success).seasons)
+            MatchList((vm.state as MatchUiState.Success).matchs)
         }
     }
 }
@@ -146,7 +149,7 @@ fun MatchList(matches : List<Match>) {
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier.size(200.dp),
+        modifier = modifier.fillMaxWidth().fillMaxHeight().size(200.dp),
         painter = painterResource(R.drawable.loading_img),
         contentDescription = "Loading"
     )
@@ -155,7 +158,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 @Composable
 fun ErrorScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth().fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

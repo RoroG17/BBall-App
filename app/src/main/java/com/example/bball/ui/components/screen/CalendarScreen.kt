@@ -14,8 +14,7 @@ import com.example.bball.viewmodels.MatchViewModel
 @Composable
 fun CalendarScreen(vm: MatchViewModel = MatchViewModel()) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        DropDownSeasons(vm)
-        ListMatch(state = vm.state)
+        ListMatch(vm = vm)
     }
 }
 
