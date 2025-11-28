@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,7 +32,8 @@ import com.example.bball.ui.components.DropDown.DropDownSeasons
 import com.example.bball.ui.theme.Primary
 import com.example.bball.viewmodels.MatchUiState
 import com.example.bball.viewmodels.MatchViewModel
-import org.w3c.dom.Text
+import com.example.bball.ui.components.screen.LoadingScreen
+import com.example.bball.ui.components.screen.ErrorScreen
 
 @Composable
 fun MatchCard(
@@ -154,32 +153,5 @@ fun MatchList(matches : List<Match>) {
                 }
             )
         }
-    }
-}
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Image(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .size(200.dp),
-        painter = painterResource(R.drawable.loading_img),
-        contentDescription = "Loading"
-    )
-}
-
-@Composable
-fun ErrorScreen(message:String, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
-        )
-        Text(text = message, modifier = Modifier.padding(16.dp))
     }
 }

@@ -1,6 +1,5 @@
 package com.example.bball.viewmodels
 
-import android.os.Message
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +14,7 @@ import com.example.bball.network.SeasonApi
 import kotlinx.coroutines.launch
 
 
-sealed interface MatchUiState {
+sealed interface MatchUiState : HomeUiState {
     data class Success(
         val matches: List<Match>,
         val seasons: List<Season>
