@@ -26,8 +26,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.bball.R
 import com.example.bball.models.Match
+import com.example.bball.network.NETWORK_IMAGES_LOGO
 import com.example.bball.ui.components.DropDown.DropDownSeasons
 import com.example.bball.ui.theme.Primary
 import com.example.bball.viewmodels.MatchUiState
@@ -74,8 +76,8 @@ fun MatchCard(
         ) {
             // Équipe domicile
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                AsyncImage(
+                    model = "$NETWORK_IMAGES_LOGO${match.logoDom}",
                     contentDescription = "Logo ${match.equipeDom}",
                     modifier = Modifier.size(80.dp)
                 )
@@ -101,8 +103,8 @@ fun MatchCard(
 
             // Équipe extérieur
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                AsyncImage(
+                    model = "$NETWORK_IMAGES_LOGO${match.logoExt}",
                     contentDescription = "Logo ${match.equipeExt}",
                     modifier = Modifier.size(80.dp)
                 )
