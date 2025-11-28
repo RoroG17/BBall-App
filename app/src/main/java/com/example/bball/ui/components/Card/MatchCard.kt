@@ -80,11 +80,17 @@ fun MatchCard(
                     contentDescription = "Logo ${match.equipeDom}",
                     modifier = Modifier.size(80.dp)
                 )
+
                 Text(
-                    text = match.equipeDom,
+                    text = if (match.equipeDom.length > 10) {
+                        match.equipeDom.take(10) + "..."
+                    } else {
+                        match.equipeDom
+                    },
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center
                 )
+
             }
 
             // Score
@@ -102,7 +108,11 @@ fun MatchCard(
                     modifier = Modifier.size(80.dp)
                 )
                 Text(
-                    text = match.equipeExt,
+                    text = if (match.equipeExt.length > 10) {
+                        match.equipeExt.take(10) + "..."
+                    } else {
+                        match.equipeExt
+                    },
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center
                 )
@@ -116,15 +126,15 @@ fun MatchCard(
 @Composable
 fun ListMatch(vm: MatchViewModel) {
     when (vm.state) {
-        MatchUiState.Error -> {
-            ErrorScreen()
+        is MatchUiState.Error -> {
+            ErrorScreen((vm.state as MatchUiState.Error).message)
         }
         MatchUiState.Loading -> {
             LoadingScreen()
         }
         is MatchUiState.Success -> {
             DropDownSeasons(vm, (vm.state as MatchUiState.Success).seasons)
-            MatchList((vm.state as MatchUiState.Success).matchs)
+            MatchList((vm.state as MatchUiState.Success).matches)
         }
     }
 }
@@ -149,22 +159,27 @@ fun MatchList(matches : List<Match>) {
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier.fillMaxWidth().fillMaxHeight().size(200.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .size(200.dp),
         painter = painterResource(R.drawable.loading_img),
         contentDescription = "Loading"
     )
 }
 
 @Composable
-fun ErrorScreen(modifier: Modifier = Modifier) {
+fun ErrorScreen(message:String, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.fillMaxWidth().fillMaxHeight(),
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
         )
-        Text(text = "Connexion error", modifier = Modifier.padding(16.dp))
+        Text(text = message, modifier = Modifier.padding(16.dp))
     }
 }

@@ -1,5 +1,6 @@
 package com.example.bball.viewmodels
 
+import android.os.Message
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,11 +17,11 @@ import kotlinx.coroutines.launch
 
 sealed interface MatchUiState {
     data class Success(
-        val matchs: List<Match>,
+        val matches: List<Match>,
         val seasons: List<Season>
     ) : MatchUiState
 
-    object Error : MatchUiState
+    data class Error(val message: String) : MatchUiState
     object Loading : MatchUiState
 }
 class MatchViewModel : ViewModel() {
@@ -28,7 +29,9 @@ class MatchViewModel : ViewModel() {
     var state: MatchUiState by mutableStateOf(MatchUiState.Loading)
         private set
 
-    var season = sampleSeason[3]
+    var matches = listOf<Match>()
+    var season : Season by mutableStateOf(sampleSeason[3])
+        private set
 
     init {
         getListMatch()
@@ -39,22 +42,37 @@ class MatchViewModel : ViewModel() {
         viewModelScope.launch {
             state = MatchUiState.Loading
             state = try {
-                val dataMatch = MatchApi.retrofitService.getMatchs()
+                matches = MatchApi.retrofitService.getMatchs()
                 val dataSeason = SeasonApi.retrofitService.getSeasons()
-                MatchUiState.Success(getMatchesBySeason(dataMatch), dataSeason)
+                MatchUiState.Success(matches.filter{ match -> match.idSaison == season.idSeason }, dataSeason)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("API_ERROR", "Erreur API: ${e.message}")
-                MatchUiState.Error
+                MatchUiState.Error("Erreur chargement des données")
             }
         }
     }
 
-    fun getMatchesBySeason(matches : List<Match>): List<Match> {
-        Log.d("Test", "Get Matches by Season : ${season.idSeason}")
-        return matches.filter { match ->
-            Log.d("Filter", "Comparing ${match.idSaison} with ${season.idSeason}")
-            match.idSaison == season.idSeason
+
+    fun onSeasonSelected(newSeason: Season) {
+        season = newSeason
+        getMatchesBySeason()
+    }
+
+
+    fun getMatchesBySeason() {
+        try {
+            val data = matches.filter { match ->
+                match.idSaison == season.idSeason
+            }
+            if (data.isEmpty()) {
+                state = MatchUiState.Error("No data found")
+            } else {
+                state = MatchUiState.Success(data, (state as MatchUiState.Success).seasons)
+            }
+        } catch (e: Exception) {
+            Log.d("Match Error", e.message.toString())
+            state = MatchUiState.Error("Impossible de filtrer les matches")
         }
     }
 }

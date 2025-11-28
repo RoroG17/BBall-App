@@ -1,5 +1,6 @@
 package com.example.bball.ui.components.DropDown
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,19 +44,19 @@ fun DropDownSeasons(vm: MatchViewModel, seasons: List<Season>) {
             }
             DropdownMenu(
                 expanded = isDropDownExpanded.value,
-                onDismissRequest = {
-                    isDropDownExpanded.value = false
-                }) {
+                onDismissRequest = { isDropDownExpanded.value = false }
+            ) {
                 seasons.forEach { season ->
-                    DropdownMenuItem(text = {
-                        Text(text = season.getText())
-                    },
-                    onClick = {
-                        isDropDownExpanded.value = false
-                        vm.season = season
-                    })
+                    DropdownMenuItem(
+                        text = { Text(text = season.getText()) },
+                        onClick = {
+                            isDropDownExpanded.value = false
+                            vm.onSeasonSelected(season)
+                        }
+                    )
                 }
             }
+
         }
 
     }
