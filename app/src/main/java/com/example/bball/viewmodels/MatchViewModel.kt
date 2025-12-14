@@ -14,7 +14,7 @@ import com.example.bball.network.SeasonApi
 import kotlinx.coroutines.launch
 
 
-sealed interface MatchUiState : HomeUiState {
+sealed interface MatchUiState {
     data class Success(
         val matches: List<Match>,
         val seasons: List<Season>

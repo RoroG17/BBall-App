@@ -1,46 +1,56 @@
 package com.example.bball.ui.components.screen
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import android.util.Log
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-
+import com.example.bball.viewmodels.LoginState
+import com.example.bball.viewmodels.LoginViewModel
 
 @Composable
 fun LoginScreen(
     navController: NavController,
+    loginVM: LoginViewModel = viewModel(), // Utilise viewModel() si pas injecté
     modifier: Modifier = Modifier
 ) {
-    var user by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
 
+//    // Observer le state
+//    LaunchedEffect(state) {
+//        when (state) {
+//            is LoginState.Error -> errorMessage = (state as LoginState.Error).message
+//            is LoginState.InitPassword -> {
+//                navController.navigate("init_password_screen/${(state as LoginState.InitPassword).username}")
+//            }
+//            is LoginState.Connect -> {
+//                navController.navigate("home_screen/${(state as LoginState.Connect).joueur}")
+//            }
+//            LoginState.Loading -> errorMessage = null
+//        }
+//    }
+
+    when (loginVM.state) {
+        is LoginState.Connect -> TODO()
+        is LoginState.Error -> TODO()
+        is LoginState.InitPassword -> InitPasswordScreen(loginVM = loginVM)
+        LoginState.Loading -> ConnectScreen(loginVM = loginVM)
+    }
+}
+
+@Composable
+fun ConnectScreen(loginVM: LoginViewModel) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
@@ -53,10 +63,10 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Champ Email
+        // Champ Username
         OutlinedTextField(
-            value = user,
-            onValueChange = { user = it },
+            value = loginVM.username,
+            onValueChange = { loginVM.username = it },
             label = { Text("Nom") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
@@ -65,34 +75,68 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Champ Mot de passe
-
         PasswordField(
-            password = password,
-            onPasswordChange = { password = it },
+            password = loginVM.password,
+            onPasswordChange = { loginVM.password = it },
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Bouton Connexion
+        Button(
+            onClick = { loginVM.connect() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Se connecter")
+        }
+    }
+}
+
+@Composable
+fun InitPasswordScreen(
+    modifier : Modifier = Modifier,
+    loginVM : LoginViewModel
+    ) {
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Initialisation du compte",
+            style = MaterialTheme.typography.headlineMedium
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        PasswordField(
+            password = loginVM.password,
+            onPasswordChange = { loginVM.password = it },
+            modifier = Modifier.fillMaxWidth()
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Message d'erreur
-        errorMessage?.let {
-            Text(
-                text = it,
-                color = Color.Red,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
+        // Champ Mot de passe
+        PasswordField(
+            password = loginVM.passwordVerify,
+            onPasswordChange = { loginVM.passwordVerify = it },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Bouton Connexion
         Button(
             onClick = {
-                if (user.isBlank()) {
-                    errorMessage = "Veuillez remplir tous les champs"
+                if (loginVM.password == loginVM.passwordVerify) {
+                    loginVM.InitAccount()
                 } else {
-                    errorMessage = null
-                    navController.navigate("home")
+                    Log.d("Verify password","Les mots de passe ne correspondent pas")
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -127,4 +171,3 @@ fun PasswordField(
         modifier = modifier
     )
 }
-
