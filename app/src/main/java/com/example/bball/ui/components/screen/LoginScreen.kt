@@ -56,7 +56,7 @@ fun ConnectScreen(loginVM: LoginViewModel) {
         OutlinedTextField(
             value = loginVM.username,
             onValueChange = { loginVM.username = it },
-            label = { stringResource(R.string.name_input) },
+            label = { Text(text = stringResource(R.string.name_input)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
