@@ -8,12 +8,13 @@ import androidx.lifecycle.ViewModel
 import com.example.bball.network.LoginAPI
 import com.example.bball.network.LoginRequest
 import androidx.lifecycle.viewModelScope
+import com.example.bball.models.User
 import kotlinx.coroutines.launch
 
 sealed interface LoginState {
     data class Error(val message: String) : LoginState
     data class InitPassword(val username: String) : LoginState
-    data class Connect(val joueur: String) : LoginState
+    data class Connect(val user: User?) : LoginState
     object Loading : LoginState
 }
 
@@ -22,7 +23,6 @@ class LoginViewModel : ViewModel() {
     var username by mutableStateOf("")
     var password by mutableStateOf("")
     var passwordVerify by mutableStateOf("")
-
     var state: LoginState by mutableStateOf(LoginState.Loading)
         private set
 
@@ -43,7 +43,7 @@ class LoginViewModel : ViewModel() {
 
                 state = when (response.code()) {
                     201 -> LoginState.InitPassword(username)   // mot de passe à initialiser
-                    200 -> LoginState.Connect(username)        // connexion réussie
+                    200 -> LoginState.Connect(response.body()?.user)        // connexion réussie
                     401 -> LoginState.Error("Mot de passe incorrect")
                     404 -> LoginState.Error("Utilisateur non trouvé")
                     else -> {
@@ -76,9 +76,7 @@ class LoginViewModel : ViewModel() {
                     Log.d("Api Login", "Compte créé ")
                 }
                 state = when (response.code()) {
-                    200 -> {
-                        LoginState.Connect(username)
-                    }
+                    200 -> LoginState.Connect(response.body()?.user)
                     404 -> LoginState.Error("Utilisateur non trouvé")
                     else -> {
                         val message = response.body()?.message ?: "Erreur inconnue"

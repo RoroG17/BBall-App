@@ -1,6 +1,7 @@
 package com.example.bball.network
 
 import com.example.bball.models.Match
+import com.example.bball.models.User
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -38,5 +39,6 @@ data class LoginRequest(
 )
 
 data class LoginResponse(
+    val user : User,
     val message: String
 )

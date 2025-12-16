@@ -21,27 +21,11 @@ import com.example.bball.viewmodels.LoginViewModel
 @Composable
 fun LoginScreen(
     navController: NavController,
-    loginVM: LoginViewModel = viewModel(), // Utilise viewModel() si pas injecté
-    modifier: Modifier = Modifier
+    loginVM: LoginViewModel = viewModel()
 ) {
-
-//    // Observer le state
-//    LaunchedEffect(state) {
-//        when (state) {
-//            is LoginState.Error -> errorMessage = (state as LoginState.Error).message
-//            is LoginState.InitPassword -> {
-//                navController.navigate("init_password_screen/${(state as LoginState.InitPassword).username}")
-//            }
-//            is LoginState.Connect -> {
-//                navController.navigate("home_screen/${(state as LoginState.Connect).joueur}")
-//            }
-//            LoginState.Loading -> errorMessage = null
-//        }
-//    }
-
     when (loginVM.state) {
-        is LoginState.Connect -> TODO()
-        is LoginState.Error -> TODO()
+        is LoginState.Connect -> navController.navigate("home_screen/${(loginVM.state as LoginState.Connect).user?.joueur}")
+        is LoginState.Error -> Log.e("Login error", (loginVM.state as LoginState.Error).message)
         is LoginState.InitPassword -> InitPasswordScreen(loginVM = loginVM)
         LoginState.Loading -> ConnectScreen(loginVM = loginVM)
     }
