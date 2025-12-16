@@ -12,7 +12,7 @@ fun AppNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "login") {
-        composable("login") { LoginScreen(navController) }
+        composable("login") { LoginScreen() }
         composable("home_screen/BC113512") { NavMenu() }
         composable ("match/{id}" ) { backStackEntry ->
             TODO()

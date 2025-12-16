@@ -17,16 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.bball.ui.components.layout.LoadingComponent
+import com.example.bball.ui.components.layout.NavMenu
 import com.example.bball.viewmodels.LoginState
 import com.example.bball.viewmodels.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
     loginVM: LoginViewModel = viewModel()
 ) {
     when (loginVM.state) {
-        is LoginState.Connect -> navController.navigate("home_screen/${(loginVM.state as LoginState.Connect).user?.joueur}")
+        is LoginState.Connect -> NavMenu()
         is LoginState.Error -> ConnectScreen(loginVM = loginVM)
         is LoginState.InitPassword -> InitPasswordScreen(loginVM = loginVM)
         LoginState.Loading -> LoadingComponent()
