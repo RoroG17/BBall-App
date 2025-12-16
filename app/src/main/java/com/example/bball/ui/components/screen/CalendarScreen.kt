@@ -7,8 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.bball.ui.components.Card.ListMatch
-import com.example.bball.ui.components.DropDown.DropDownSeasons
+import com.example.bball.ui.components.card.ListMatch
 import com.example.bball.viewmodels.MatchViewModel
 
 @Composable

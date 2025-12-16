@@ -1,6 +1,5 @@
 package com.example.bball.ui.components.screen
 
-import android.os.Message
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,12 +9,12 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
+import com.example.bball.R
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.layout.NavMenu
 import com.example.bball.viewmodels.LoginState
@@ -48,7 +47,7 @@ fun ConnectScreen(loginVM: LoginViewModel) {
     ) {
 
         Text(
-            text = "Connexion",
+            text = stringResource(R.string.connexion_title),
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -57,7 +56,7 @@ fun ConnectScreen(loginVM: LoginViewModel) {
         OutlinedTextField(
             value = loginVM.username,
             onValueChange = { loginVM.username = it },
-            label = { Text("Nom") },
+            label = { stringResource(R.string.name_input) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -86,7 +85,7 @@ fun ConnectScreen(loginVM: LoginViewModel) {
             onClick = { loginVM.connect() },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Se connecter")
+            Text(stringResource(R.string.connexion_button))
         }
     }
 }

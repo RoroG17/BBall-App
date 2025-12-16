@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">BBall</string>
+    <string name="previous_game_title">Résultat</string>
+    <string name="next_game_title">Prochain Match</string>
+    <string name="connexion_title">Connexion</string>
+
+    <string name="connexion_button">Se connecter</string>
+
+    <string name="name_input">Nom</string>
+    <string name="loading_text">Loading</string>
+    <string name="card_match_header">Journée %1$d - %2$s</string>
+    <string name="logo_team">Logo %1$s</string>
 </resources>

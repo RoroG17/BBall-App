@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.bball.R
@@ -27,10 +28,10 @@ fun AppTopBar(modifier: Modifier = Modifier) {
     ) {
         Image(
             painter = painterResource(R.drawable.ic_launcher_foreground),
-            contentDescription = "App Logo"
+            contentDescription = stringResource(R.string.app_name)
         )
         Text(
-            "BBall",
+            stringResource(R.string.app_name),
             color = Color.White,
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold)

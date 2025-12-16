@@ -1,4 +1,4 @@
-package com.example.bball.ui.components.Card
+package com.example.bball.ui.components.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,13 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.bball.R
 import com.example.bball.models.Match
 import com.example.bball.network.NETWORK_IMAGES_LOGO
-import com.example.bball.ui.components.DropDown.DropDownSeasons
+import com.example.bball.ui.components.dropdown.DropDownSeasons
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.theme.Primary
 import com.example.bball.viewmodels.MatchUiState
@@ -56,7 +58,7 @@ fun MatchCard(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Journée ${match.numero} - ${match.dateMatch}",
+                text = stringResource(R.string.card_match_header, match.numero, match.dateMatch),
                 color = Color.White,
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
@@ -71,11 +73,11 @@ fun MatchCard(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Équipe domicile
+
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 AsyncImage(
                     model = "$NETWORK_IMAGES_LOGO${match.logoDom}",
-                    contentDescription = "Logo ${match.equipeDom}",
+                    contentDescription = stringResource(R.string.logo_team, match.equipeDom),
                     modifier = Modifier.size(80.dp)
                 )
 
@@ -98,11 +100,10 @@ fun MatchCard(
                 textAlign = TextAlign.Center
             )
 
-            // Équipe extérieur
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 AsyncImage(
                     model = "$NETWORK_IMAGES_LOGO${match.logoExt}",
-                    contentDescription = "Logo ${match.equipeExt}",
+                    contentDescription = stringResource(R.string.logo_team),
                     modifier = Modifier.size(80.dp)
                 )
                 Text(
@@ -148,7 +149,7 @@ fun MatchList(matches : List<Match>) {
             MatchCard(
                 match = match,
                 onClick = {
-                    // Action au clic (ex: navigation)
+                    // Action au click (ex: navigation)
                 }
             )
         }
