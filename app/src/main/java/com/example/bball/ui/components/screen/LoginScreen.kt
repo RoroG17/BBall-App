@@ -1,5 +1,6 @@
 package com.example.bball.ui.components.screen
 
+import android.os.Message
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -25,7 +26,7 @@ fun LoginScreen(
 ) {
     when (loginVM.state) {
         is LoginState.Connect -> navController.navigate("home_screen/${(loginVM.state as LoginState.Connect).user?.joueur}")
-        is LoginState.Error -> Log.e("Login error", (loginVM.state as LoginState.Error).message)
+        is LoginState.Error -> ConnectScreen(loginVM = loginVM)
         is LoginState.InitPassword -> InitPasswordScreen(loginVM = loginVM)
         LoginState.Loading -> ConnectScreen(loginVM = loginVM)
     }
@@ -33,6 +34,9 @@ fun LoginScreen(
 
 @Composable
 fun ConnectScreen(loginVM: LoginViewModel) {
+
+    val state = loginVM.state
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,6 +44,7 @@ fun ConnectScreen(loginVM: LoginViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Text(
             text = "Connexion",
             style = MaterialTheme.typography.headlineMedium
@@ -47,7 +52,6 @@ fun ConnectScreen(loginVM: LoginViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Champ Username
         OutlinedTextField(
             value = loginVM.username,
             onValueChange = { loginVM.username = it },
@@ -58,7 +62,6 @@ fun ConnectScreen(loginVM: LoginViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Champ Mot de passe
         PasswordField(
             password = loginVM.password,
             onPasswordChange = { loginVM.password = it },
@@ -66,6 +69,15 @@ fun ConnectScreen(loginVM: LoginViewModel) {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        if (state is LoginState.Error) {
+            Text(
+                text = state.message,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         // Bouton Connexion
         Button(
@@ -76,6 +88,7 @@ fun ConnectScreen(loginVM: LoginViewModel) {
         }
     }
 }
+
 
 @Composable
 fun InitPasswordScreen(

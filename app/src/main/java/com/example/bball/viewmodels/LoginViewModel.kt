@@ -42,12 +42,13 @@ class LoginViewModel : ViewModel() {
                 )
 
                 state = when (response.code()) {
-                    201 -> LoginState.InitPassword(username)   // mot de passe à initialiser
-                    200 -> LoginState.Connect(response.body()?.user)        // connexion réussie
+                    201 -> LoginState.InitPassword(username)
+                    200 -> LoginState.Connect(response.body()?.user)
+                    400 -> LoginState.Error("Veuillez enter un mot de passe")
                     401 -> LoginState.Error("Mot de passe incorrect")
                     404 -> LoginState.Error("Utilisateur non trouvé")
                     else -> {
-                        val message = response.body()?.message ?: "Erreur inconnue"
+                        val message = response.body()?.message?: "Erreur inconnue ${response.code()}"
                         LoginState.Error(message)
                     }
                 }
@@ -72,9 +73,6 @@ class LoginViewModel : ViewModel() {
                     LoginRequest(username = username, password = password)
                 )
 
-                if (response.code() == 200) {
-                    Log.d("Api Login", "Compte créé ")
-                }
                 state = when (response.code()) {
                     200 -> LoginState.Connect(response.body()?.user)
                     404 -> LoginState.Error("Utilisateur non trouvé")

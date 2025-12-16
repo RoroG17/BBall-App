@@ -13,7 +13,7 @@ fun AppNavigation() {
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginScreen(navController) }
-        composable("home") { NavMenu() }
+        composable("home_screen/BC113512") { NavMenu() }
         composable ("match/{id}" ) { backStackEntry ->
             TODO()
         }
