@@ -15,6 +15,7 @@ sealed interface LoginState {
     data class Error(val message: String) : LoginState
     data class InitPassword(val username: String) : LoginState
     data class Connect(val user: User?) : LoginState
+    object Unconnect : LoginState
     object Loading : LoginState
 }
 
@@ -23,7 +24,7 @@ class LoginViewModel : ViewModel() {
     var username by mutableStateOf("")
     var password by mutableStateOf("")
     var passwordVerify by mutableStateOf("")
-    var state: LoginState by mutableStateOf(LoginState.Loading)
+    var state: LoginState by mutableStateOf(LoginState.Unconnect)
         private set
 
     fun connect() {
@@ -60,12 +61,13 @@ class LoginViewModel : ViewModel() {
     }
 
     fun InitAccount() {
-        Log.d("Api Login", "Initialisation du compte")
 
         if (password.isBlank() || password != passwordVerify) {
             state = LoginState.Error("Erreur de mot de passe")
             return
         }
+
+        state = LoginState.Loading
 
         viewModelScope.launch {
             try {

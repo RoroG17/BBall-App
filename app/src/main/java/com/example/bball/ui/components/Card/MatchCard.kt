@@ -1,6 +1,5 @@
 package com.example.bball.ui.components.Card
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,19 +21,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.bball.R
 import com.example.bball.models.Match
 import com.example.bball.network.NETWORK_IMAGES_LOGO
 import com.example.bball.ui.components.DropDown.DropDownSeasons
+import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.theme.Primary
 import com.example.bball.viewmodels.MatchUiState
 import com.example.bball.viewmodels.MatchViewModel
-import com.example.bball.ui.components.screen.LoadingScreen
 import com.example.bball.ui.components.screen.ErrorScreen
 
 @Composable
@@ -131,7 +128,7 @@ fun ListMatch(vm: MatchViewModel) {
             ErrorScreen((vm.state as MatchUiState.Error).message)
         }
         MatchUiState.Loading -> {
-            LoadingScreen()
+            LoadingComponent()
         }
         is MatchUiState.Success -> {
             DropDownSeasons(vm, (vm.state as MatchUiState.Success).seasons)

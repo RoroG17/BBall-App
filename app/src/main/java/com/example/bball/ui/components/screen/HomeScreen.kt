@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bball.models.Match
 import com.example.bball.ui.components.Card.MatchCard
+import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.viewmodels.HomeUiState
 import com.example.bball.viewmodels.HomeViewModel
 
@@ -21,7 +22,7 @@ fun HomeScreen(vm : HomeViewModel = HomeViewModel()) {
 
     when (vm.state) {
         is HomeUiState.Error -> ErrorScreen(message = (vm.state as HomeUiState.Error).message)
-        HomeUiState.Loading -> LoadingScreen()
+        HomeUiState.Loading -> LoadingComponent()
         is HomeUiState.Success -> {
             Log.d("HomeScreen Info", "Success")
             MatchView(

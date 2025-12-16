@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.viewmodels.LoginState
 import com.example.bball.viewmodels.LoginViewModel
 
@@ -28,7 +29,8 @@ fun LoginScreen(
         is LoginState.Connect -> navController.navigate("home_screen/${(loginVM.state as LoginState.Connect).user?.joueur}")
         is LoginState.Error -> ConnectScreen(loginVM = loginVM)
         is LoginState.InitPassword -> InitPasswordScreen(loginVM = loginVM)
-        LoginState.Loading -> ConnectScreen(loginVM = loginVM)
+        LoginState.Loading -> LoadingComponent()
+        LoginState.Unconnect -> ConnectScreen(loginVM = loginVM)
     }
 }
 
