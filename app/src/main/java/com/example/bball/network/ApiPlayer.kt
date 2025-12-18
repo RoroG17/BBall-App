@@ -7,17 +7,13 @@ import retrofit2.http.GET
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Path
 
-
-private const val BASE_URL =
-    "https://statmatch.alwaysdata.net/"
-
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
-    .baseUrl(BASE_URL)
+    .baseUrl(SERVEUR_API)
     .build()
 
 interface ApiPlayer {
-    @GET("api/joueurs/{id}")
+    @GET("joueurs/{id}")
     suspend fun getPlayerDetails(
         @Path("id") licence: String
     ): RequestResponse

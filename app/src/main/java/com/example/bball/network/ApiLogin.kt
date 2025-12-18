@@ -1,17 +1,12 @@
 package com.example.bball.network
 
-import com.example.bball.models.Match
 import com.example.bball.models.User
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
-
-private const val BASE_URL =
-    "https://statmatch.alwaysdata.net/"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
