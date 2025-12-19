@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bball.ui.components.card.PlayerCard
-import com.example.bball.ui.components.dropdown.DropDownPeriod
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.table.MatchStatsTable
 import com.example.bball.viewmodels.PlayerUiState
@@ -50,7 +49,6 @@ fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
 
         Row {
             //DropDownSeasons()
-            DropDownPeriod()
         }
 
         MatchStatsTable(stats = stats)

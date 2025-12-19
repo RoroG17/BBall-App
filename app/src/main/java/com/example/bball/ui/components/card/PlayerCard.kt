@@ -76,7 +76,7 @@ fun PlayerCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "Né(e) le ${player.birthDate}",
+                    text = "Né(e) le ${player.getBirthDateFormat()}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
