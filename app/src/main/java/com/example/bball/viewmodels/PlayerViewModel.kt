@@ -1,5 +1,6 @@
 package com.example.bball.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,7 @@ import com.example.bball.models.Season
 import com.example.bball.models.Stat
 import com.example.bball.network.SeasonApi
 import com.example.bball.network.PlayerApi
+import com.example.bball.session.SessionManager
 import kotlinx.coroutines.launch
 
 sealed interface PlayerUiState {
@@ -28,10 +30,12 @@ sealed interface PlayerUiState {
 
 }
 
-class PlayerViewModel : ViewModel() {
+class PlayerViewModel(context: Context) : ViewModel() {
 
     var state : PlayerUiState by mutableStateOf(PlayerUiState.Loading)
         private set
+
+    val context = context
     var player : Player by mutableStateOf(Player(
         licence = "",
         name = "",
@@ -54,7 +58,8 @@ class PlayerViewModel : ViewModel() {
         viewModelScope.launch {
             state = PlayerUiState.Loading
             state = try {
-                val response = PlayerApi.retrofitService.getPlayerDetails("BC119798") //TODO(récuperer le user)
+                val user = SessionManager(context).getUser()
+                val response = PlayerApi.retrofitService.getPlayerDetails(user?.joueur ?: "") //TODO(récuperer le user)
                 player = response.joueur
                 val seasons = SeasonApi.retrofitService.getSeasons()
                 PlayerUiState.Success(response.joueur, seasons, response.stats)

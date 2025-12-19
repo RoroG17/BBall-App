@@ -20,6 +20,7 @@ import com.example.bball.R
 import com.example.bball.ui.components.screen.CalendarScreen
 import com.example.bball.ui.components.screen.HomeScreen
 import com.example.bball.ui.components.screen.PlayerScreen
+import com.example.bball.viewmodels.LoginViewModel
 
 
 sealed class BottomNavItem(val route: String, val icon: Int, val label: String) {
@@ -62,10 +63,14 @@ fun BottomNavBar(navController: NavController) {
 }
 
 @Composable
-fun NavMenu() {
+fun NavMenu(
+    userViewModel: LoginViewModel,
+) {
     val navController = rememberNavController()
     Scaffold(
-        topBar = {AppTopBar()},
+        topBar = {AppTopBar(
+            onLogoutClick = { userViewModel.logout() }
+        )},
         bottomBar = { BottomNavBar(navController) }
     ) { innerPadding ->
         NavHost(

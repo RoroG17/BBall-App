@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bball.ui.components.card.PlayerCard
@@ -19,7 +20,7 @@ import com.example.bball.viewmodels.PlayerUiState
 import com.example.bball.viewmodels.PlayerViewModel
 
 @Composable
-fun PlayerScreen(playerVM: PlayerViewModel = PlayerViewModel()) {
+fun PlayerScreen(playerVM: PlayerViewModel = PlayerViewModel(LocalContext.current)) {
 
     when (playerVM.state) {
         is PlayerUiState.Error -> ErrorScreen((playerVM.state as PlayerUiState.Error).message)

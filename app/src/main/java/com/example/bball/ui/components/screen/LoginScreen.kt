@@ -25,7 +25,9 @@ fun LoginScreen(
     loginVM: LoginViewModel = viewModel()
 ) {
     when (loginVM.state) {
-        is LoginState.Connect -> NavMenu()
+        is LoginState.Connect -> NavMenu(
+            userViewModel = loginVM
+        )
         is LoginState.Error -> ConnectScreen(loginVM = loginVM)
         is LoginState.InitPassword -> InitPasswordScreen(loginVM = loginVM)
         LoginState.Loading -> LoadingComponent()
@@ -132,7 +134,7 @@ fun InitPasswordScreen(
         Button(
             onClick = {
                 if (loginVM.password == loginVM.passwordVerify) {
-                    loginVM.InitAccount()
+                    loginVM.initAccount()
                 } else {
                     Log.d("Verify password","Les mots de passe ne correspondent pas")
                 }

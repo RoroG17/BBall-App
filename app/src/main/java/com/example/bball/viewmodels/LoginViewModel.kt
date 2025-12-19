@@ -9,6 +9,7 @@ import com.example.bball.network.LoginAPI
 import com.example.bball.network.LoginRequest
 import androidx.lifecycle.viewModelScope
 import com.example.bball.models.User
+import com.example.bball.session.SessionManager
 import kotlinx.coroutines.launch
 
 sealed interface LoginState {
@@ -19,16 +20,26 @@ sealed interface LoginState {
     object Loading : LoginState
 }
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val sessionManager: SessionManager
+) : ViewModel() {
 
     var username by mutableStateOf("")
     var password by mutableStateOf("")
     var passwordVerify by mutableStateOf("")
+
     var state: LoginState by mutableStateOf(LoginState.Unconnect)
         private set
 
+    init {
+        sessionManager.getUser()?.let { user ->
+            state = LoginState.Connect(user)
+        }
+    }
+
     fun connect() {
         Log.d("Api Login", "Bouton click")
+
         if (username.isBlank()) {
             state = LoginState.Error("Veuillez entrer un username")
             return
@@ -39,17 +50,32 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = LoginAPI.retrofitService.connect(
-                    LoginRequest(username = username, password = password.ifBlank { null })
+                    LoginRequest(
+                        username = username,
+                        password = password.ifBlank { null }
+                    )
                 )
 
                 state = when (response.code()) {
                     201 -> LoginState.InitPassword(username)
-                    200 -> LoginState.Connect(response.body()?.user)
-                    400 -> LoginState.Error("Veuillez enter un mot de passe")
+
+                    200 -> {
+                        val user = response.body()?.user
+                        if (user != null) {
+                            sessionManager.saveUser(user)
+                            LoginState.Connect(user)
+                        } else {
+                            LoginState.Error("Utilisateur invalide")
+                        }
+                    }
+
+                    400 -> LoginState.Error("Veuillez entrer un mot de passe")
                     401 -> LoginState.Error("Mot de passe incorrect")
                     404 -> LoginState.Error("Utilisateur non trouvé")
+
                     else -> {
-                        val message = response.body()?.message?: "Erreur inconnue ${response.code()}"
+                        val message = response.body()?.message
+                            ?: "Erreur inconnue ${response.code()}"
                         LoginState.Error(message)
                     }
                 }
@@ -60,8 +86,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun InitAccount() {
-
+    fun initAccount() {
         if (password.isBlank() || password != passwordVerify) {
             state = LoginState.Error("Erreur de mot de passe")
             return
@@ -76,8 +101,18 @@ class LoginViewModel : ViewModel() {
                 )
 
                 state = when (response.code()) {
-                    200 -> LoginState.Connect(response.body()?.user)
+                    200 -> {
+                        val user = response.body()?.user
+                        if (user != null) {
+                            sessionManager.saveUser(user)
+                            LoginState.Connect(user)
+                        } else {
+                            LoginState.Error("Utilisateur invalide")
+                        }
+                    }
+
                     404 -> LoginState.Error("Utilisateur non trouvé")
+
                     else -> {
                         val message = response.body()?.message ?: "Erreur inconnue"
                         LoginState.Error(message)
@@ -89,4 +124,10 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
+
+    fun logout() {
+        sessionManager.logout()
+        state = LoginState.Unconnect
+    }
 }
+
