@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.bball.ui.components.card.PlayerCard
 import com.example.bball.ui.components.dropdown.DropDownPeriod
 import com.example.bball.ui.components.layout.LoadingComponent
+import com.example.bball.ui.components.table.MatchStatsTable
 import com.example.bball.viewmodels.PlayerUiState
 import com.example.bball.viewmodels.PlayerViewModel
 
@@ -32,6 +33,7 @@ fun PlayerScreen(playerVM: PlayerViewModel = PlayerViewModel()) {
 fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
 
     val player = (playerVM.state as PlayerUiState.Success).player
+    val stats = (playerVM.state as PlayerUiState.Success).stats
 
     Column(
         modifier = Modifier
@@ -49,6 +51,8 @@ fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
             //DropDownSeasons()
             DropDownPeriod()
         }
+
+        MatchStatsTable(stats = stats)
     }
 }
 
