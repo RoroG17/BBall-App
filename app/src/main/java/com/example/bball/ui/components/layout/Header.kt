@@ -35,13 +35,13 @@ fun AppTopBar(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.Red)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 8.dp, vertical = 25.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_launcher_foreground),
+                painter = painterResource(R.mipmap.ic_title),
                 contentDescription = stringResource(R.string.app_name)
             )
             Spacer(modifier = Modifier.width(8.dp))

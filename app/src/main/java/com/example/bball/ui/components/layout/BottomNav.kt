@@ -26,7 +26,7 @@ import com.example.bball.viewmodels.LoginViewModel
 sealed class BottomNavItem(val route: String, val icon: Int, val label: String) {
     object Accueil : BottomNavItem("accueil", R.drawable.ic_home, "Accueil")
     object Calendrier : BottomNavItem("calendrier", R.drawable.ic_calendar, "Calendrier")
-    object Stats : BottomNavItem("stats", R.drawable.ic_stats, "Stats")
+    object Stats : BottomNavItem("stats", R.drawable.ic_stat, "Stats")
 }
 
 @Composable

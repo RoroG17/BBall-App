@@ -142,7 +142,6 @@ fun ListMatch(vm: MatchViewModel) {
 fun MatchList(matches : List<Match>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(matches) { match ->
