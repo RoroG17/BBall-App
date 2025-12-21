@@ -174,3 +174,38 @@ data class Stat(
     val efficacite: Int
         get() = points + rebonds + passesDecisives + interceptions + contres - ballonsPerdus - tirsTentesTotal
 }
+
+data class ScopedStats(
+    val points: Int,
+    val pd: Int,
+    val rebOff: Int,
+    val rebDef: Int,
+    val rebTotal: Int,
+    val inter: Int,
+    val ctr: Int,
+    val bp: Int,
+    val fautes: Int,
+    val t2In: Int, val t2Att: Int, val pct2: Int,
+    val t3In: Int, val t3Att: Int, val pct3: Int,
+    val lfIn: Int, val lfAtt: Int, val pctLF: Int,
+    val fgIn: Int, val fgAtt: Int, val pctFG: Int,
+    val negatives: Int = 0,
+    val astTo: String = "—",
+    val efficacite: Int = 0,
+)
+
+data class Quarter(
+    val pd: Int,
+    val rebOff: Int,
+    val rebDef: Int,
+    val inter: Int,
+    val ctr: Int,
+    val bp: Int,
+    val fautes: Int,
+    val t2In: Int,
+    val t2Miss: Int,
+    val t3In: Int,
+    val t3Miss: Int,
+    val lfIn: Int,
+    val lfMiss: Int
+)

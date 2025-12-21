@@ -61,7 +61,7 @@ class PlayerViewModel(context: Context) : ViewModel() {
                 val user = SessionManager(context).getUser()
                 val response = PlayerApi.retrofitService.getPlayerDetails(user?.joueur ?: "") //TODO(récuperer le user)
                 player = response.joueur
-                val seasons = SeasonApi.retrofitService.getSeasons()
+                val seasons = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
                 PlayerUiState.Success(response.joueur, seasons, response.stats)
             } catch (e: Exception) {
                 e.printStackTrace()

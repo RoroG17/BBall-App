@@ -1,5 +1,6 @@
 package com.example.bball.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,7 @@ import com.example.bball.models.Season
 import com.example.bball.models.sampleSeason
 import com.example.bball.network.MatchApi
 import com.example.bball.network.SeasonApi
+import com.example.bball.session.SessionManager
 import kotlinx.coroutines.launch
 
 
@@ -23,10 +25,12 @@ sealed interface MatchUiState {
     data class Error(val message: String) : MatchUiState
     object Loading : MatchUiState
 }
-class MatchViewModel : ViewModel() {
+class MatchViewModel(context: Context) : ViewModel() {
 
     var state: MatchUiState by mutableStateOf(MatchUiState.Loading)
         private set
+
+    val context = context
 
     var matches = listOf<Match>()
     var season : Season by mutableStateOf(sampleSeason[3])
@@ -42,7 +46,9 @@ class MatchViewModel : ViewModel() {
             state = MatchUiState.Loading
             state = try {
                 matches = MatchApi.retrofitService.getMatchs()
-                val dataSeason = SeasonApi.retrofitService.getSeasons()
+
+                val user = SessionManager(context).getUser()
+                val dataSeason = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
                 MatchUiState.Success(matches.filter{ match -> match.idSaison == season.idSeason }, dataSeason)
             } catch (e: Exception) {
                 e.printStackTrace()
