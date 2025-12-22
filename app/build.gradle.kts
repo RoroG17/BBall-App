@@ -68,6 +68,13 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.0")
     implementation(libs.androidx.foundation)
 
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m2)
+    implementation(libs.vico.compose.m3)
+    implementation(libs.vico.multiplatform)
+    implementation(libs.vico.views)
+    implementation(libs.androidx.runtime)
+    implementation(libs.ui)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

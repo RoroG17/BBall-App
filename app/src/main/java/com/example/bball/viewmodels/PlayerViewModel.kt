@@ -69,4 +69,20 @@ class PlayerViewModel(context: Context) : ViewModel() {
             }
         }
     }
+
+    fun getLabelsChart() : List<String> {
+        return listOf("Pts", "Reb", "P Dec", "Int", "C", "BP", "F")
+    }
+
+    fun getAverageStat(stats : List<Stat>) : List<Int> {
+        val points = stats.sumOf { it.points } / stats.size
+        val rebonds = stats.sumOf { it.rebonds } / stats.size
+        val passes = stats.sumOf { it.passesDecisives } / stats.size
+        val int = stats.sumOf { it.interceptions } / stats.size
+        val contres = stats.sumOf { it.contres } / stats.size
+        val bp = stats.sumOf { it.ballonsPerdus } / stats.size
+        val fouls = stats.sumOf { it.fautes } / stats.size
+
+        return listOf(points, rebonds, passes, int, contres, bp, fouls)
+    }
 }

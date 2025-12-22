@@ -19,6 +19,7 @@ import com.example.bball.R
 import com.example.bball.models.Season
 import com.example.bball.viewmodels.MatchViewModel
 
+// TODO('adapt to multi vm')
 @Composable
 fun DropDownSeasons(vm: MatchViewModel, seasons: List<Season>) {
 
