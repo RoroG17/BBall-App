@@ -18,10 +18,52 @@ import androidx.compose.ui.res.painterResource
 import com.example.bball.R
 import com.example.bball.models.Season
 import com.example.bball.viewmodels.MatchViewModel
+import com.example.bball.viewmodels.PlayerViewModel
 
-// TODO('adapt to multi vm')
 @Composable
 fun DropDownSeasons(vm: MatchViewModel, seasons: List<Season>) {
+
+    val isDropDownExpanded = remember {
+        mutableStateOf(false)
+    }
+
+    Column {
+        Box {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    isDropDownExpanded.value = true
+                }
+            ) {
+                Text(text = vm.season.getText())
+                Image(
+                    painter = painterResource(id = R.drawable.ic_dropdown),
+                    contentDescription = "DropDown Icon"
+                )
+            }
+            DropdownMenu(
+                expanded = isDropDownExpanded.value,
+                onDismissRequest = { isDropDownExpanded.value = false }
+            ) {
+                seasons.forEach { season ->
+                    DropdownMenuItem(
+                        text = { Text(text = season.getText()) },
+                        onClick = {
+                            isDropDownExpanded.value = false
+                            vm.onSeasonSelected(season)
+                        }
+                    )
+                }
+            }
+
+        }
+
+    }
+}
+
+@Composable
+fun DropDownSeasons(vm: PlayerViewModel, seasons: List<Season>) {
 
     val isDropDownExpanded = remember {
         mutableStateOf(false)

@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bball.models.Player
 import com.example.bball.models.Season
 import com.example.bball.models.Stat
+import com.example.bball.models.sampleSeason
 import com.example.bball.network.SeasonApi
 import com.example.bball.network.PlayerApi
 import com.example.bball.session.SessionManager
@@ -34,6 +35,13 @@ class PlayerViewModel(context: Context) : ViewModel() {
 
     var state : PlayerUiState by mutableStateOf(PlayerUiState.Loading)
         private set
+
+    var season : Season by mutableStateOf(sampleSeason[3])
+        private set
+
+    var stats: List<Stat> = listOf()
+
+    var seasons: List<Season> = listOf()
 
     val context = context
     var player : Player by mutableStateOf(Player(
@@ -61,8 +69,11 @@ class PlayerViewModel(context: Context) : ViewModel() {
                 val user = SessionManager(context).getUser()
                 val response = PlayerApi.retrofitService.getPlayerDetails(user?.joueur ?: "") //TODO(récuperer le user)
                 player = response.joueur
-                val seasons = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
-                PlayerUiState.Success(response.joueur, seasons, response.stats)
+                stats = response.stats
+                seasons = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
+                PlayerUiState.Success(response.joueur, seasons, stats.filter { stat ->
+                    stat.Id_Saison == season.idSeason
+                })
             } catch (e: Exception) {
                 e.printStackTrace()
                 PlayerUiState.Error(e.message.toString())
@@ -84,5 +95,31 @@ class PlayerViewModel(context: Context) : ViewModel() {
         val fouls = stats.sumOf { it.fautes } / stats.size
 
         return listOf(points, rebonds, passes, int, contres, bp, fouls)
+    }
+
+    fun onSeasonSelected(newSeason: Season) {
+        Log.d("test dropdown", "saison : $newSeason")
+        season = newSeason
+        getMatchesBySeason()
+    }
+
+    fun getMatchesBySeason() {
+        Log.d("test dropdown", "saison : ${state}")
+        try {
+            val data = stats.filter { stat ->
+                stat.Id_Saison == season.idSeason
+            }
+            if (data.isEmpty()) {
+                Log.d("test dropdown", "donnée vide")
+                state = PlayerUiState.Error("No data found")
+                Log.e("test dropdown", "saison : ${state}")
+            } else {
+                Log.d("test dropdown", "données pleine")
+                state = PlayerUiState.Success(player, seasons, data)
+            }
+        } catch (e: Exception) {
+            Log.e("Match Error", e.message.toString())
+            state = PlayerUiState.Error("Impossible de filtrer les matches")
+        }
     }
 }

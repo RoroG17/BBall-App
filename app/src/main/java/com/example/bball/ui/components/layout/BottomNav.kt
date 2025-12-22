@@ -1,5 +1,6 @@
 package com.example.bball.ui.components.layout
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -9,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -21,6 +23,7 @@ import com.example.bball.ui.components.screen.CalendarScreen
 import com.example.bball.ui.components.screen.HomeScreen
 import com.example.bball.ui.components.screen.PlayerScreen
 import com.example.bball.viewmodels.LoginViewModel
+import com.example.bball.viewmodels.PlayerViewModel
 
 
 sealed class BottomNavItem(val route: String, val icon: Int, val label: String) {
@@ -62,6 +65,7 @@ fun BottomNavBar(navController: NavController) {
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun NavMenu(
     userViewModel: LoginViewModel,
@@ -80,7 +84,7 @@ fun NavMenu(
         ) {
             composable(BottomNavItem.Accueil.route) { HomeScreen() }
             composable(BottomNavItem.Calendrier.route) { CalendarScreen() }
-            composable(BottomNavItem.Stats.route) { PlayerScreen() }
+            composable(BottomNavItem.Stats.route) { PlayerScreen(PlayerViewModel(LocalContext.current)) }
         }
     }
 }

@@ -75,6 +75,7 @@ data class Stat(
     val q4_passes_reussies: Int,
     val q4_passes_rates: Int,
 
+    val Id_Saison: Int,
     val match_libelle: String
 )
 {

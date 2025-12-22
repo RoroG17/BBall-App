@@ -23,13 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bball.ui.components.card.PlayerCard
 import com.example.bball.ui.components.chart.BarChart
+import com.example.bball.ui.components.dropdown.DropDownSeasons
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.table.MatchStatsTable
 import com.example.bball.viewmodels.PlayerUiState
 import com.example.bball.viewmodels.PlayerViewModel
 
 @Composable
-fun PlayerScreen(playerVM: PlayerViewModel = PlayerViewModel(LocalContext.current)) {
+fun PlayerScreen(playerVM: PlayerViewModel) {
 
     when (playerVM.state) {
         is PlayerUiState.Error -> ErrorScreen((playerVM.state as PlayerUiState.Error).message)
@@ -43,6 +44,7 @@ fun PlayerScreen(playerVM: PlayerViewModel = PlayerViewModel(LocalContext.curren
 fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
 
     val player = (playerVM.state as PlayerUiState.Success).player
+    val seasons = (playerVM.state as PlayerUiState.Success).season
     val stats = (playerVM.state as PlayerUiState.Success).stats
 
     Column(
@@ -57,6 +59,8 @@ fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
         )
+
+        DropDownSeasons(playerVM, seasons = seasons)
 
         MatchStatsTable(stats = stats, modifier = Modifier.height(500.dp))
 
