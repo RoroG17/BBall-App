@@ -31,6 +31,10 @@ sealed interface PlayerUiState {
 
 }
 
+enum class TypePieChart {
+    SHOOT, THREE, LF
+}
+
 class PlayerViewModel(context: Context) : ViewModel() {
 
     var state : PlayerUiState by mutableStateOf(PlayerUiState.Loading)

@@ -76,6 +76,10 @@ dependencies {
     implementation(libs.androidx.runtime)
     implementation(libs.ui)
 
+    implementation("co.yml:ycharts:2.1.0")
+    implementation(libs.ui.graphics)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

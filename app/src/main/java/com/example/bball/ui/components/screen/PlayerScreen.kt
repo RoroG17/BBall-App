@@ -22,13 +22,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bball.ui.components.card.PlayerCard
-import com.example.bball.ui.components.chart.BarChart
+//import com.example.bball.ui.components.chart.BarChart
+import com.example.bball.ui.components.chart.MyLineChart
+import com.example.bball.ui.components.chart.MyPieChart
+import com.example.bball.ui.components.chart.NewBarChart
 import com.example.bball.ui.components.dropdown.DropDownSeasons
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.table.MatchStatsTable
 import com.example.bball.ui.components.table.PlayerStatsTable
 import com.example.bball.viewmodels.PlayerUiState
 import com.example.bball.viewmodels.PlayerViewModel
+import com.example.bball.viewmodels.TypePieChart
 
 @Composable
 fun PlayerScreen(playerVM: PlayerViewModel) {
@@ -79,10 +83,26 @@ fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            BarChart(
-                labels = playerVM.getLabelsChart(),
-                values = playerVM.getAverageStat(stats)
+            NewBarChart(stats = stats)
+
+            MyPieChart(
+                title = "% de shoot",
+                stats = stats,
+                type = TypePieChart.SHOOT
             )
+
+            MyPieChart(
+                title = "% de 3pts",
+                stats = stats,
+                type = TypePieChart.THREE
+            )
+
+            MyPieChart(
+                title = "% de Lf",
+                stats = stats,
+                type = TypePieChart.LF
+            )
+
         }
     }
 }
