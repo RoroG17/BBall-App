@@ -5,6 +5,11 @@ data class Stat(
     val id: Int,
     val Id_Match: Int,
     val licence: String,
+    val nom: String,
+    val prenom: String,
+    val photo: String,
+    val equipe : String,
+    val logo : String,
     val minutes: String,
 
     // Q1
@@ -80,6 +85,9 @@ data class Stat(
 )
 {
 
+    fun getPlayerName(): String {
+        return "$prenom $nom"
+    }
     private fun sum(vararg values: Int) = values.sum()
     private fun pct(made: Int, attempted: Int): Float =
         if (attempted > 0) 100f * made / attempted else 0f

@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.bball.R
 import com.example.bball.models.Match
@@ -45,7 +46,7 @@ fun MatchCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick(0) },
+            .clickable { onClick(match.idMatch) },
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -123,7 +124,7 @@ fun MatchCard(
 
 
 @Composable
-fun ListMatch(vm: MatchViewModel) {
+fun ListMatch(vm: MatchViewModel, navController: NavController) {
     when (vm.state) {
         is MatchUiState.Error -> {
             ErrorScreen((vm.state as MatchUiState.Error).message)
@@ -133,13 +134,13 @@ fun ListMatch(vm: MatchViewModel) {
         }
         is MatchUiState.Success -> {
             DropDownSeasons(vm, (vm.state as MatchUiState.Success).seasons)
-            MatchList((vm.state as MatchUiState.Success).matches)
+            MatchList((vm.state as MatchUiState.Success).matches, navController = navController)
         }
     }
 }
 
 @Composable
-fun MatchList(matches : List<Match>) {
+fun MatchList(matches : List<Match>, navController: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -148,7 +149,7 @@ fun MatchList(matches : List<Match>) {
             MatchCard(
                 match = match,
                 onClick = {
-                    // Action au click (ex: navigation)
+                    navController.navigate("match_detail/${match.idMatch}")
                 }
             )
         }

@@ -14,13 +14,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.bball.R
 import com.example.bball.ui.components.screen.CalendarScreen
 import com.example.bball.ui.components.screen.HomeScreen
+import com.example.bball.ui.components.screen.MatchDetailScreen
 import com.example.bball.ui.components.screen.PlayerScreen
 import com.example.bball.viewmodels.LoginViewModel
 import com.example.bball.viewmodels.PlayerViewModel
@@ -82,9 +85,20 @@ fun NavMenu(
             startDestination = BottomNavItem.Accueil.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(BottomNavItem.Accueil.route) { HomeScreen() }
-            composable(BottomNavItem.Calendrier.route) { CalendarScreen() }
+            composable(BottomNavItem.Accueil.route) { HomeScreen(navController = navController) }
+            composable(BottomNavItem.Calendrier.route) { CalendarScreen(navController = navController) }
             composable(BottomNavItem.Stats.route) { PlayerScreen(PlayerViewModel(LocalContext.current)) }
+            composable(
+                route = "match_detail/{matchId}",
+                arguments = listOf(
+                    navArgument("matchId") { type = NavType.IntType }
+                )
+            ) { backStackEntry ->
+                val matchId =
+                    backStackEntry.arguments?.getInt("matchId") ?: return@composable
+
+                MatchDetailScreen(id = matchId)
+            }
         }
     }
 }

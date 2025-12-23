@@ -8,25 +8,30 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.bball.models.Player
+import coil.compose.AsyncImage
 import com.example.bball.models.Stat
+import com.example.bball.network.NETWORK_IMAGES_LOGO
+import com.example.bball.network.NETWORK_IMAGES_PLAYER
 import com.example.bball.viewmodels.StatScope
 import com.example.bball.viewmodels.StatViewModel
 
 @Composable
-fun PlayerStatsTable(
+fun MatchStatsTable(
     stats: List<Stat>,
     modifier: Modifier = Modifier,
     statVM: StatViewModel = viewModel(),
@@ -55,7 +60,7 @@ fun PlayerStatsTable(
                             .horizontalScroll(scrollX)
                             .padding(vertical = 8.dp)
                     ) {
-                        statVM.columns.forEach { col ->
+                        statVM.columnsMatch.forEach { col ->
                             HeaderCell(col.header, col.width)
                         }
                     }
@@ -85,7 +90,7 @@ fun PlayerStatsTable(
                         .padding(horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    statVM.columns.forEach { col ->
+                    statVM.columnsMatch.forEach { col ->
                         BodyCell(
                             text = col.value(row),
                             width = col.width,
@@ -124,16 +129,43 @@ private fun StatTabbedDialog(
             }
         },
         title = {
-            Column {
-                Text(
-                    text = "Détails du match",
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(
-                    text = stat.match_libelle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            Row {
+                Column {
+                    AsyncImage(
+                        model = "$NETWORK_IMAGES_PLAYER${stat.photo}",
+                        contentDescription = "Photo de ${stat.nom} ${stat.prenom}",
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(50.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                Spacer(Modifier.width(10.dp))
+                Column {
+                    Text(
+                        text = stat.getPlayerName(),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+
+                    Row {
+                        AsyncImage(
+                            model = "$NETWORK_IMAGES_LOGO${stat.logo}",
+                            contentDescription = "Logo de ${stat.equipe}",
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clip(RoundedCornerShape(50.dp))
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(Modifier.width(5.dp))
+                        Text(
+                            text = stat.equipe,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
         },
         text = {
@@ -175,9 +207,9 @@ private fun StatTabbedDialog(
     )
 }
 
-/* ========================================================= */
-/* ====================== CONTENT ========================== */
-/* ========================================================= */
+///* ========================================================= */
+///* ====================== CONTENT ========================== */
+///* ========================================================= */
 
 @Composable
 private fun StatScopeContent(
@@ -217,9 +249,9 @@ private fun StatScopeContent(
     }
 }
 
-/* ========================================================= */
-/* ====================== UI ATOMS ========================= */
-/* ========================================================= */
+///* ========================================================= */
+///* ====================== UI ATOMS ========================= */
+///* ========================================================= */
 
 @Composable
 private fun SectionTitle(text: String) {

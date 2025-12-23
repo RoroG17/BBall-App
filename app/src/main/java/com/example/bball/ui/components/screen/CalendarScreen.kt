@@ -8,18 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.bball.ui.components.card.ListMatch
 import com.example.bball.viewmodels.MatchViewModel
 
 @Composable
-fun CalendarScreen(vm: MatchViewModel = MatchViewModel(LocalContext.current)) {
+fun CalendarScreen(vm: MatchViewModel = MatchViewModel(LocalContext.current), navController: NavController) {
     Column(modifier = Modifier.fillMaxSize().padding(all = 8.dp)) {
-        ListMatch(vm = vm)
+        ListMatch(vm = vm, navController = navController)
     }
-}
-
-@Preview
-@Composable
-fun ViewCalendarPage() {
-    HomeScreen()
 }

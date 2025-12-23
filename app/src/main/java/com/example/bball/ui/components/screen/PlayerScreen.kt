@@ -26,6 +26,7 @@ import com.example.bball.ui.components.chart.BarChart
 import com.example.bball.ui.components.dropdown.DropDownSeasons
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.table.MatchStatsTable
+import com.example.bball.ui.components.table.PlayerStatsTable
 import com.example.bball.viewmodels.PlayerUiState
 import com.example.bball.viewmodels.PlayerViewModel
 
@@ -62,7 +63,7 @@ fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
 
         DropDownSeasons(playerVM, seasons = seasons)
 
-        MatchStatsTable(stats = stats, modifier = Modifier.height(500.dp))
+        PlayerStatsTable(stats = stats, modifier = Modifier.height(500.dp))
 
         //Graphique
         Column(
@@ -84,11 +85,4 @@ fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
             )
         }
     }
-}
-
-
-@Preview
-@Composable
-fun ViewPlayerPage() {
-    HomeScreen()
 }
