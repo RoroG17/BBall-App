@@ -1,7 +1,6 @@
 package com.example.bball.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -106,27 +105,21 @@ class PlayerViewModel(context: Context) : ViewModel() {
     }
 
     fun onSeasonSelected(newSeason: Season) {
-        Log.d("test dropdown", "saison : $newSeason")
         season = newSeason
         getMatchesBySeason()
     }
 
     fun getMatchesBySeason() {
-        Log.d("test dropdown", "saison : ${state}")
         try {
             val data = stats.filter { stat ->
                 stat.Id_Saison == season?.idSeason
             }
             if (data.isEmpty()) {
-                Log.d("test dropdown", "donnée vide")
                 state = PlayerUiState.Error("No data found")
-                Log.e("test dropdown", "saison : ${state}")
             } else {
-                Log.d("test dropdown", "données pleine")
                 state = PlayerUiState.Success(player, seasons, data)
             }
         } catch (e: Exception) {
-            Log.e("Match Error", e.message.toString())
             state = PlayerUiState.Error("Impossible de filtrer les matches")
         }
     }

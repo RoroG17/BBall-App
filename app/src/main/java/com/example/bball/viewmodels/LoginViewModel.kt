@@ -1,14 +1,13 @@
 package com.example.bball.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.bball.network.LoginAPI
-import com.example.bball.network.LoginRequest
 import androidx.lifecycle.viewModelScope
 import com.example.bball.models.User
+import com.example.bball.network.LoginAPI
+import com.example.bball.network.LoginRequest
 import com.example.bball.session.SessionManager
 import kotlinx.coroutines.launch
 
@@ -28,6 +27,8 @@ class LoginViewModel(
     var password by mutableStateOf("")
     var passwordVerify by mutableStateOf("")
 
+    var errorMessage by mutableStateOf("")
+
     var state: LoginState by mutableStateOf(LoginState.Unconnect)
         private set
 
@@ -38,7 +39,6 @@ class LoginViewModel(
     }
 
     fun connect() {
-        Log.d("Api Login", "Bouton click")
 
         if (username.isBlank()) {
             state = LoginState.Error("Veuillez entrer un username")

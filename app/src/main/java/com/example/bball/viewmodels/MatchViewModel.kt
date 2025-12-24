@@ -1,7 +1,6 @@
 package com.example.bball.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -57,7 +56,6 @@ class MatchViewModel(context: Context) : ViewModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("API_ERROR", "Erreur API: ${e.message}")
                 MatchUiState.Error("Erreur chargement des données")
             }
         }
@@ -75,13 +73,12 @@ class MatchViewModel(context: Context) : ViewModel() {
             val data = matches.filter { match ->
                 match.idSaison == season?.idSeason
             }
-            if (data.isEmpty()) {
-                state = MatchUiState.Error("No data found")
+            state = if (data.isEmpty()) {
+                MatchUiState.Error("No data found")
             } else {
-                state = MatchUiState.Success(data, (state as MatchUiState.Success).seasons)
+                MatchUiState.Success(data, (state as MatchUiState.Success).seasons)
             }
         } catch (e: Exception) {
-            Log.d("Match Error", e.message.toString())
             state = MatchUiState.Error("Impossible de filtrer les matches")
         }
     }
