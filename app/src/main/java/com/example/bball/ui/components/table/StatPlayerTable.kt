@@ -20,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.bball.models.Player
 import com.example.bball.models.Stat
 import com.example.bball.viewmodels.StatScope
 import com.example.bball.viewmodels.StatViewModel
@@ -35,7 +34,6 @@ fun PlayerStatsTable(
 
     Surface(
         modifier = modifier
-            .fillMaxSize()
             .padding(12.dp),
         shape = MaterialTheme.shapes.medium,
         tonalElevation = 1.dp

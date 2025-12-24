@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -42,13 +43,18 @@ fun MatchStatsTable(
         modifier = modifier
             .fillMaxSize()
             .padding(12.dp),
-        shape = MaterialTheme.shapes.medium,
-        tonalElevation = 1.dp
+        shape = RoundedCornerShape(16.dp),
+        tonalElevation = 4.dp,
+        shadowElevation = 2.dp
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                .border(
+                    1.dp,
+                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    shape = RoundedCornerShape(16.dp)
+                )
         ) {
 
             // ===== HEADER =====
@@ -58,7 +64,8 @@ fun MatchStatsTable(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surfaceVariant)
                             .horizontalScroll(scrollX)
-                            .padding(vertical = 8.dp)
+                            .padding(vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         statVM.columnsMatch.forEach { col ->
                             HeaderCell(col.header, col.width)
@@ -72,8 +79,10 @@ fun MatchStatsTable(
             itemsIndexed(stats, key = { _, r -> r.id }) { index, row ->
 
                 val baseBg =
-                    if (index % 2 == 0) Color.Transparent
-                    else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+                    if (index % 2 == 0)
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.03f)
+                    else
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.05f)
 
                 val bgColor =
                     if (statVM.selectedStat == row)
@@ -86,8 +95,8 @@ fun MatchStatsTable(
                         .background(bgColor)
                         .clickable { statVM.selectedStat = row }
                         .horizontalScroll(scrollX)
-                        .height(44.dp)
-                        .padding(horizontal = 4.dp),
+                        .height(48.dp)
+                        .padding(horizontal = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     statVM.columnsMatch.forEach { col ->
@@ -102,6 +111,7 @@ fun MatchStatsTable(
         }
     }
 
+    // DIALOG
     statVM.selectedStat?.let { stat ->
         StatTabbedDialog(
             stat = stat,
@@ -110,10 +120,6 @@ fun MatchStatsTable(
         )
     }
 }
-
-/* ========================================================= */
-/* ====================== DIALOG =========================== */
-/* ========================================================= */
 
 @Composable
 private fun StatTabbedDialog(
@@ -125,40 +131,37 @@ private fun StatTabbedDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Fermer")
+                Text("Fermer", color = MaterialTheme.colorScheme.primary)
             }
         },
         title = {
-            Row {
-                Column {
-                    AsyncImage(
-                        model = "$NETWORK_IMAGES_PLAYER${stat.photo}",
-                        contentDescription = "Photo de ${stat.nom} ${stat.prenom}",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(RoundedCornerShape(50.dp))
-                            .background(MaterialTheme.colorScheme.surfaceVariant),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                Spacer(Modifier.width(10.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AsyncImage(
+                    model = "$NETWORK_IMAGES_PLAYER${stat.photo}",
+                    contentDescription = "Photo de ${stat.nom} ${stat.prenom}",
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(Modifier.width(12.dp))
                 Column {
                     Text(
                         text = stat.getPlayerName(),
                         style = MaterialTheme.typography.titleLarge
                     )
-
-                    Row {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         AsyncImage(
                             model = "$NETWORK_IMAGES_LOGO${stat.logo}",
                             contentDescription = "Logo de ${stat.equipe}",
                             modifier = Modifier
-                                .size(20.dp)
-                                .clip(RoundedCornerShape(50.dp))
+                                .size(24.dp)
+                                .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.surfaceVariant),
                             contentScale = ContentScale.Crop
                         )
-                        Spacer(Modifier.width(5.dp))
+                        Spacer(Modifier.width(6.dp))
                         Text(
                             text = stat.equipe,
                             style = MaterialTheme.typography.bodySmall,
@@ -169,16 +172,14 @@ private fun StatTabbedDialog(
             }
         },
         text = {
-            Column {
+            Column(modifier = Modifier.padding(top = 8.dp)) {
 
                 TabRow(
                     selectedTabIndex = statVM.tabs.indexOf(statVM.selectedTab),
                     indicator = { tabPositions ->
                         Box(
                             Modifier
-                                .tabIndicatorOffset(
-                                    tabPositions[statVM.tabs.indexOf(statVM.selectedTab)]
-                                )
+                                .tabIndicatorOffset(tabPositions[statVM.tabs.indexOf(statVM.selectedTab)])
                                 .height(3.dp)
                                 .background(MaterialTheme.colorScheme.primary)
                         )
@@ -188,14 +189,12 @@ private fun StatTabbedDialog(
                         Tab(
                             selected = statVM.selectedTab == scope,
                             onClick = { statVM.selectedTab = scope },
-                            text = {
-                                Text(statVM.tabTitles[scope]!!)
-                            }
+                            text = { Text(statVM.tabTitles[scope]!!) }
                         )
                     }
                 }
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(16.dp))
 
                 StatScopeContent(
                     stat = stat,
@@ -205,11 +204,8 @@ private fun StatTabbedDialog(
             }
         }
     )
-}
 
-///* ========================================================= */
-///* ====================== CONTENT ========================== */
-///* ========================================================= */
+}
 
 @Composable
 private fun StatScopeContent(

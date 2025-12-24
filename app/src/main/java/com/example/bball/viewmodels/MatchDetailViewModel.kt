@@ -44,6 +44,22 @@ class MatchDetailViewModel (val id: Int) : ViewModel() {
             }
         }
     }
+
+    fun getLabelsChart() : List<String> {
+        return listOf("Pts", "Reb", "P Dec", "Int", "C", "BP", "F")
+    }
+
+    fun getAverageStat(stats : List<Stat>) : List<Int> {
+        val points = stats.sumOf { it.points }
+        val rebonds = stats.sumOf { it.rebonds }
+        val passes = stats.sumOf { it.passesDecisives }
+        val int = stats.sumOf { it.interceptions }
+        val contres = stats.sumOf { it.contres }
+        val bp = stats.sumOf { it.ballonsPerdus }
+        val fouls = stats.sumOf { it.fautes }
+
+        return listOf(points, rebonds, passes, int, contres, bp, fouls)
+    }
 }
 
 class MatchDetailViewModelFactory(private val id: Int) : ViewModelProvider.Factory {

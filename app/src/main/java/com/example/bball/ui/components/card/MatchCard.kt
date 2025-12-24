@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,18 +31,19 @@ import com.example.bball.models.Match
 import com.example.bball.network.NETWORK_IMAGES_LOGO
 import com.example.bball.ui.components.dropdown.DropDownSeasons
 import com.example.bball.ui.components.layout.LoadingComponent
+import com.example.bball.ui.components.screen.ErrorScreen
 import com.example.bball.ui.theme.Primary
 import com.example.bball.viewmodels.MatchUiState
 import com.example.bball.viewmodels.MatchViewModel
-import com.example.bball.ui.components.screen.ErrorScreen
 
 @Composable
 fun MatchCard(
     match : Match,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onClick(match.idMatch) },
@@ -133,9 +133,31 @@ fun ListMatch(vm: MatchViewModel, navController: NavController) {
             LoadingComponent()
         }
         is MatchUiState.Success -> {
-            DropDownSeasons(vm, (vm.state as MatchUiState.Success).seasons)
-            MatchList((vm.state as MatchUiState.Success).matches, navController = navController)
+
+            val successState = vm.state as MatchUiState.Success
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                    DropDownSeasons(
+                        vm = vm,
+                        seasons = successState.seasons,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    MatchList(
+                        matches = successState.matches,
+                        navController = navController
+                    )
+
+            }
         }
+
     }
 }
 

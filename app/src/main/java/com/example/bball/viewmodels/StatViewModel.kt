@@ -39,7 +39,7 @@ class StatViewModel : ViewModel() {
     var selectedTab by mutableStateOf(StatScope.TOTAL)
     val tabs = listOf(StatScope.TOTAL, StatScope.Q1, StatScope.Q2, StatScope.Q3, StatScope.Q4)
     val tabTitles = mapOf(
-        StatScope.TOTAL to "Total",
+        StatScope.TOTAL to "All",
         StatScope.Q1 to "Q1",
         StatScope.Q2 to "Q2",
         StatScope.Q3 to "Q3",

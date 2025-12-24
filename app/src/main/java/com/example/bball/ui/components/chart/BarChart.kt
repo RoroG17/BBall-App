@@ -1,5 +1,6 @@
 package com.example.bball.ui.components.chart
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,176 +14,175 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.yml.charts.axis.AxisData
-import co.yml.charts.axis.DataCategoryOptions
 import co.yml.charts.common.model.Point
-import co.yml.charts.common.utils.DataUtils
 import co.yml.charts.ui.barchart.BarChart
 import co.yml.charts.ui.barchart.models.BarChartData
-import co.yml.charts.ui.barchart.models.BarChartType
 import co.yml.charts.ui.barchart.models.BarData
 import com.example.bball.models.Stat
 import com.example.bball.utils.averageStats
-import com.example.bball.viewmodels.PlayerViewModel
-import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
-import com.patrykandpatrick.vico.compose.cartesian.layer.rememberColumnCartesianLayer
-import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
-import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
-import com.patrykandpatrick.vico.compose.common.component.rememberLineComponent
-import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
-import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
-import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
-import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
-import com.patrykandpatrick.vico.core.common.component.LineComponent
+import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.multiplatform.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.columnSeries
+import com.patrykandpatrick.vico.multiplatform.cartesian.layer.ColumnCartesianLayer
+import com.patrykandpatrick.vico.multiplatform.cartesian.layer.rememberColumnCartesianLayer
+import com.patrykandpatrick.vico.multiplatform.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.multiplatform.cartesian.rememberVicoScrollState
+import com.patrykandpatrick.vico.multiplatform.common.Fill
+import com.patrykandpatrick.vico.multiplatform.common.component.LineComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.rememberLineComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.rememberTextComponent
 import kotlin.math.ceil
 
-//@Composable
-//fun BarChart(
-//    labels: List<String>,
-//    values: List<Int>,
-//    modifier: Modifier = Modifier
-//) {
-//    val modelProducer = remember { CartesianChartModelProducer() }
-//    val scrollState = rememberVicoScrollState()
-//
-//    val columnComponent: LineComponent = rememberLineComponent(
-//            thickness = 24.dp
-//        )
-//
-//
-//
-//    LaunchedEffect(values) {
-//        modelProducer.runTransaction {
-//            columnSeries {
-//                series(y = values)
-//            }
-//        }
-//    }
-//
-//    Card(
-//        modifier = modifier.fillMaxWidth(),
-//        shape = RoundedCornerShape(16.dp),
-//        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-//    ) {
-//        Column(
-//            modifier = Modifier.padding(16.dp)
-//        ) {
-//            Text(
-//                text = "Statistiques",
-//                style = MaterialTheme.typography.titleMedium,
-//                modifier = Modifier.padding(bottom = 12.dp)
-//            )
-//
-//            CartesianChartHost(
-//                chart = rememberCartesianChart(
-//                    rememberColumnCartesianLayer(
-//                        // Style des colonnes
-//                        columnProvider = ColumnCartesianLayer.ColumnProvider.series(
-//                            columnComponent
-//                        ),
-//                        //Valeur affichée sur les barres (API ancienne)
-//                        dataLabel = rememberTextComponent(
-//                            color = MaterialTheme.colorScheme.onSurface,
-//                            textSize = 12.sp
-//                        )
-//                    ),
-//
-//                    // 📈 Axe Y
-//                    startAxis = VerticalAxis.rememberStart(
-//                        label = rememberTextComponent(
-//                            textSize = 12.sp,
-//                            color = MaterialTheme.colorScheme.onSurfaceVariant
-//                        )
-//                    ),
-//
-//                    // 🏷️ Axe X
-//                    bottomAxis = HorizontalAxis.rememberBottom(
-//                        valueFormatter = { _, value, _ ->
-//                            labels.getOrNull(value.toInt()) ?: ""
-//                        },
-//                        label = rememberTextComponent(
-//                            textSize = 12.sp,
-//                            color = MaterialTheme.colorScheme.onSurfaceVariant
-//                        )
-//                    )
-//                ),
-//                modelProducer = modelProducer,
-//                scrollState = scrollState,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(260.dp)
-//            )
-//        }
-//    }
-//}
+@Composable
+fun BarChart(
+    labels: List<String>,
+    values: List<Int>,
+    title: String,
+    modifier: Modifier = Modifier
+) {
+    val modelProducer = remember { CartesianChartModelProducer() }
+    val scrollState = rememberVicoScrollState()
+
+    val columnComponent: LineComponent = rememberLineComponent(
+        thickness = 24.dp,
+        fill = Fill(color = Color.Red)
+    )
+
+    LaunchedEffect(values) {
+        modelProducer.runTransaction {
+            columnSeries {
+                series(y = values)
+            }
+        }
+    }
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            // ===== TITRE =====
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+
+            // ===== CHART =====
+            CartesianChartHost(
+                chart = rememberCartesianChart(
+                    rememberColumnCartesianLayer(
+                        columnProvider = ColumnCartesianLayer.ColumnProvider.series(
+                            columnComponent
+                        ),
+                        dataLabel = rememberTextComponent(
+                            style = TextStyle(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = 12.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        )
+                    ),
+                    startAxis = VerticalAxis.rememberStart(
+                        label = rememberTextComponent(
+                            style = TextStyle(MaterialTheme.colorScheme.onSurfaceVariant)
+                        )
+                    ),
+                    bottomAxis = HorizontalAxis.rememberBottom(
+                        valueFormatter = { _, value, _ -> labels.getOrNull(value.toInt()) ?: "" },
+                        label = rememberTextComponent(
+                            style = TextStyle(MaterialTheme.colorScheme.onSurfaceVariant)
+                        )
+                    )
+                ),
+                modelProducer = modelProducer,
+                scrollState = scrollState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(260.dp)
+            )
+        }
+    }
+}
+
 
 @Composable
-fun NewBarChart(stats : List<Stat>) {
-
+fun NewBarChart(stats: List<Stat>) {
     val data = averageStats(stats)
     val barsData = data.entries.mapIndexed { index, entry ->
         BarData(
             point = Point(index.toFloat(), entry.value),
-            label = entry.key
+            label = entry.key,
+            color = if (entry.value >= 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
         )
     }
 
-    // 🔵 Calcul automatique de l’axe Y
     val maxY = barsData.maxOf { it.point.y }
     val ySteps = 5
     val yStepSize = ceil(maxY / ySteps).toInt().coerceAtLeast(1)
 
-    // 🔴 Axe X
     val xAxisData = AxisData.Builder()
         .axisStepSize(36.dp)
         .steps(barsData.size)
         .bottomPadding(48.dp)
         .axisLabelAngle(0f)
-        .labelData { index ->
-            barsData.getOrNull(index)?.label ?: ""
-        }
+        .labelData { index -> barsData.getOrNull(index)?.label ?: "" }
         .build()
 
-    // 🟢 Axe Y
     val yAxisData = AxisData.Builder()
         .steps(ySteps)
         .labelAndAxisLinePadding(16.dp)
         .axisOffset(0.dp)
-        .labelData { index ->
-            (index * yStepSize).toString()
-        }
+        .labelData { index -> (index * yStepSize).toString() }
         .build()
 
-    // 🟣 Données du graphique
     val barChartData = BarChartData(
         chartData = barsData,
         xAxisData = xAxisData,
-        yAxisData = yAxisData,
+        yAxisData = yAxisData
     )
 
-    BarChart(
+    Column(
         modifier = Modifier
-            .height(350.dp)
             .fillMaxWidth()
-            .padding(start = 12.dp),
-        barChartData = barChartData
-    )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Text(
+            text = "Statistiques moyennes",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        )
+
+        BarChart(
+            modifier = Modifier
+                .height(350.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
+            barChartData = barChartData
+        )
+    }
 }
 
-
-@Preview
-@Composable
-private fun BarChartPreview() {
-    val labels = listOf("Lun", "Mar", "Mer", "Jeu", "Ven")
-    val values = listOf(12, 8, 16, 10, 14)
-    //BarChart(labels, values)
-    //NewBarChart()
-}
