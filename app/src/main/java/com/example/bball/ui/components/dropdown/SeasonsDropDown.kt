@@ -33,7 +33,7 @@ fun DropDownSeasons(
     ) {
 
         OutlinedTextField(
-            value = vm.season.getText(),
+            value = vm.season?.getText() ?: "Erreur",
             onValueChange = {},
             readOnly = true,
             label = { Text("Saison") },
@@ -79,7 +79,7 @@ fun DropDownSeasons(
     ) {
 
         OutlinedTextField(
-            value = vm.season.getText(),
+            value = vm.season?.getText() ?: "Erreur",
             onValueChange = {},
             readOnly = true,
             label = { Text("Saison") },

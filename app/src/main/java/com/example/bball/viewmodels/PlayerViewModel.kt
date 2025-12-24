@@ -70,13 +70,14 @@ class PlayerViewModel(context: Context) : ViewModel() {
             state = PlayerUiState.Loading
             state = try {
                 val user = SessionManager(context).getUser()
-                val response = PlayerApi.retrofitService.getPlayerDetails(user?.joueur ?: "") //TODO(récuperer le user)
+                val response = PlayerApi.retrofitService.getPlayerDetails(user?.joueur ?: "")
                 player = response.joueur
                 stats = response.stats
                 seasons = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
                 if (seasons.isEmpty()) {
                     PlayerUiState.Error("Aucune saison n'a été trouvée")
                 } else {
+                    season = seasons[seasons.size - 1]
                     PlayerUiState.Success(response.joueur, seasons, stats.filter { stat ->
                         stat.Id_Saison == season?.idSeason
                     })

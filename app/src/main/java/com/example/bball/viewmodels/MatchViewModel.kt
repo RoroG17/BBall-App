@@ -49,8 +49,8 @@ class MatchViewModel(context: Context) : ViewModel() {
                 val user = SessionManager(context).getUser()
                 val dataSeason = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
 
-                if (dataSeason.isEmpty()) {
-                    season = dataSeason.get(dataSeason.size - 1)
+                if (!dataSeason.isEmpty()) {
+                    season = dataSeason[dataSeason.size - 1]
                     MatchUiState.Success(matches.filter { match -> match.idSaison == season?.idSeason }, dataSeason)
                 } else {
                     MatchUiState.Error("Aucune saison n'a été trouvée")
