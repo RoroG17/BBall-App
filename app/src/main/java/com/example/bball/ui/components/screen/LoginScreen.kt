@@ -112,7 +112,7 @@ fun InitPasswordScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        SectionTitle(text = "Initialisation du compte")
+        SectionTitle(text = stringResource(R.string.title_init_account))
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -145,7 +145,7 @@ fun InitPasswordScreen(
                 .fillMaxWidth()
                 .height(48.dp)
         ) {
-            Text("Valider")
+            Text(stringResource(R.string.label_agree))
         }
     }
 }

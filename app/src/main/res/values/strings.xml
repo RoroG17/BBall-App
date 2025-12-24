@@ -15,4 +15,43 @@
     <string name="season_title">Espace Joueur</string>
     <string name="average_stats_title">Statistiques Moyennes</string>
     <string name="calendar_title">Calendrier</string>
+    <string name="pie_label_success">Réussis</string>
+    <string name="pie_label_fail">Manqués</string>
+    <string name="label_error">Erreur</string>
+    <string name="label_logout">Déconnexion</string>
+    <string name="label_agree">Valider</string>
+    <string name="title_init_account">Initialisation du compte</string>
+    <string name="chart_bar_title_match">Graphique des performances</string>
+    <string name="title_stats">Statistiques</string>
+    <string name="pie_chart_title">Répartition des tirs</string>
+    <string name="bar_chart_title_avg">Statistiques Moyennes</string>
+    <string name="label_close">Fermer</string>
+
+    <!-- ===== POPUP / SECTIONS ===== -->
+    <string name="popup_title">Synthèse</string>
+    <string name="stats_shots_title">🏀 Tirs</string>
+    <string name="stats_advanced_title">📊 Avancé</string>
+
+    <!-- ===== STATS LABELS ===== -->
+    <string name="stat_points">Points</string>
+    <string name="stat_assists">Passes décisives</string>
+    <string name="stat_rebounds">Rebonds</string>
+    <string name="stat_steals">Interceptions</string>
+    <string name="stat_blocks">Contres</string>
+    <string name="stat_turnovers">Ballons perdus</string>
+    <string name="stat_fouls">Fautes</string>
+
+    <string name="stat_2pts">2 pts</string>
+    <string name="stat_3pts">3 pts</string>
+    <string name="stat_free_throws">LF</string>
+    <string name="stat_fg_percent">FG%%</string>
+
+    <string name="stat_negatives">Négatives</string>
+    <string name="stat_ast_to">Assist / Turnover</string>
+    <string name="stat_efficiency">Efficacité</string>
+
+    <!-- ===== FORMATTED STRINGS ===== -->
+    <string name="stat_rebounds_format">%1$s / %2$s (Total %3$s)</string>
+    <string name="stat_shots_format">%1$s/%2$s (%3$s%%)</string>
+
 </resources>

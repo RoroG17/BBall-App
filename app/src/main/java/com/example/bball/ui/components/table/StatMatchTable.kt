@@ -17,14 +17,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.bball.R
 import com.example.bball.models.Stat
 import com.example.bball.network.NETWORK_IMAGES_LOGO
 import com.example.bball.network.NETWORK_IMAGES_PLAYER
@@ -131,7 +132,7 @@ private fun StatTabbedDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Fermer", color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.label_close), color = MaterialTheme.colorScheme.primary)
             }
         },
         title = {
@@ -221,27 +222,55 @@ private fun StatScopeContent(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
 
-        SectionTitle("Synthèse")
-        StatLine("Points", data.points)
-        StatLine("Passes décisives", data.pd)
-        StatLine("Rebonds", "${data.rebOff} / ${data.rebDef} (Total ${data.rebTotal})")
-        StatLine("Interceptions", data.inter)
-        StatLine("Contres", data.ctr)
-        StatLine("Ballons perdus", data.bp)
-        StatLine("Fautes", data.fautes)
+        SectionTitle(stringResource(R.string.popup_title))
 
-        SectionTitle("🏀 Tirs")
-        StatLine("2 pts", "${data.t2In}/${data.t2Att} (${data.pct2}%)")
-        StatLine("3 pts", "${data.t3In}/${data.t3Att} (${data.pct3}%)")
-        StatLine("LF", "${data.lfIn}/${data.lfAtt} (${data.pctLF}%)")
-        StatLine("FG%", "${data.fgIn}/${data.fgAtt} (${data.pctFG}%)")
+        StatLine(stringResource(R.string.stat_points), data.points)
+        StatLine(stringResource(R.string.stat_assists), data.pd)
+
+        StatLine(
+            stringResource(R.string.stat_rebounds),
+            stringResource(
+                R.string.stat_rebounds_format,
+                data.rebOff,
+                data.rebDef,
+                data.rebTotal
+            )
+        )
+
+        StatLine(stringResource(R.string.stat_steals), data.inter)
+        StatLine(stringResource(R.string.stat_blocks), data.ctr)
+        StatLine(stringResource(R.string.stat_turnovers), data.bp)
+        StatLine(stringResource(R.string.stat_fouls), data.fautes)
+
+        SectionTitle(stringResource(R.string.stats_shots_title))
+
+        StatLine(
+            stringResource(R.string.stat_2pts),
+            stringResource(R.string.stat_shots_format, data.t2In, data.t2Att, data.pct2)
+        )
+
+        StatLine(
+            stringResource(R.string.stat_3pts),
+            stringResource(R.string.stat_shots_format, data.t3In, data.t3Att, data.pct3)
+        )
+
+        StatLine(
+            stringResource(R.string.stat_free_throws),
+            stringResource(R.string.stat_shots_format, data.lfIn, data.lfAtt, data.pctLF)
+        )
+
+        StatLine(
+            stringResource(R.string.stat_fg_percent),
+            stringResource(R.string.stat_shots_format, data.fgIn, data.fgAtt, data.pctFG)
+        )
 
         if (scope == StatScope.TOTAL) {
-            SectionTitle("📊 Avancé")
-            StatLine("Négatives", data.negatives)
-            StatLine("Assist / Turnover", data.astTo)
-            StatLine("Efficacité", data.efficacite)
+            SectionTitle(stringResource(R.string.stats_advanced_title))
+            StatLine(stringResource(R.string.stat_negatives), data.negatives)
+            StatLine(stringResource(R.string.stat_ast_to), data.astTo)
+            StatLine(stringResource(R.string.stat_efficiency), data.efficacite)
         }
+
     }
 }
 

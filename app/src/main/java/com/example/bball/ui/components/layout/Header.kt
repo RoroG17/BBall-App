@@ -56,7 +56,7 @@ fun AppTopBar(
         IconButton(onClick = onLogoutClick) {
             Icon(
                 imageVector = Icons.Default.Logout,
-                contentDescription = "Déconnexion",
+                contentDescription = stringResource(R.string.label_logout),
                 tint = Color.White
             )
         }

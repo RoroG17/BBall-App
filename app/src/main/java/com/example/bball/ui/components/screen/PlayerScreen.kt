@@ -26,13 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.bball.R
 import com.example.bball.models.Stat
 import com.example.bball.ui.components.card.PlayerCard
 import com.example.bball.ui.components.chart.BarChart
 import com.example.bball.ui.components.chart.MyPieChart
-import com.example.bball.ui.components.chart.NewBarChart
 import com.example.bball.ui.components.dropdown.DropDownSeasons
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.table.PlayerStatsTable
@@ -91,10 +92,8 @@ fun PlayerDetailsScreen(playerVM: PlayerViewModel) {
             BarChart(
                 labels = playerVM.getLabelsChart(),
                 values = playerVM.getAverageStat(stats),
-                title = "Statistiques Moyennes"
+                title = stringResource(R.string.bar_chart_title_avg)
             )
-
-            //NewBarChart(stats = stats)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -115,9 +114,8 @@ fun PieChartTabs(
         TabRow(
             selectedTabIndex = PieChartTab.entries.indexOf(selectedTab),
             containerColor = Color.Red, // fond rouge
-            contentColor = Color.White,  // couleur du texte par défaut
+            contentColor = Color.White,
             indicator = { tabPositions ->
-                // Indicateur pour l'onglet sélectionné
                 Box(
                     Modifier
                         .tabIndicatorOffset(tabPositions[PieChartTab.entries.indexOf(selectedTab)])

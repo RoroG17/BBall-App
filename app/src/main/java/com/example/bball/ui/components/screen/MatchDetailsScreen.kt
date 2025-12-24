@@ -14,11 +14,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.bball.R
 import com.example.bball.ui.components.card.MatchCard
 import com.example.bball.ui.components.chart.BarChart
-import com.example.bball.ui.components.chart.NewBarChart
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.table.MatchStatsTable
 import com.example.bball.viewmodels.MatchDetailUiState
@@ -95,7 +96,7 @@ fun MatchDetails(vm: MatchDetailViewModel) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Graphique des performances",
+                    text = stringResource(R.string.chart_bar_title_match),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
@@ -103,7 +104,7 @@ fun MatchDetails(vm: MatchDetailViewModel) {
                 BarChart(
                     labels = vm.getLabelsChart(),
                     values = vm.getAverageStat(stats),
-                    title = "Statistiques"
+                    title = stringResource(R.string.title_stats)
                 )
             }
         }
@@ -121,7 +122,7 @@ fun MatchDetails(vm: MatchDetailViewModel) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Répartition des tirs",
+                    text = stringResource(R.string.pie_chart_title),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 12.dp)
                 )

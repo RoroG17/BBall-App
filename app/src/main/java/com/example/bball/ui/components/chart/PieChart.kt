@@ -20,13 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import co.yml.charts.common.model.PlotType
 import co.yml.charts.ui.piechart.charts.PieChart
 import co.yml.charts.ui.piechart.models.PieChartConfig
 import co.yml.charts.ui.piechart.models.PieChartData
+import com.example.bball.R
 import com.example.bball.models.Stat
 import com.example.bball.utils.getTirManque
 import com.example.bball.utils.getTirReussi
@@ -37,12 +38,12 @@ fun MyPieChart(title: String, stats: List<Stat>, type: TypePieChart) {
 
     val slices = listOf(
         PieChartData.Slice(
-            "Réussis",
+            stringResource(R.string.pie_label_success),
             getTirReussi(stats, type),
             Color.Green
         ),
         PieChartData.Slice(
-            "Manqués",
+            stringResource(R.string.pie_label_fail),
             getTirManque(stats, type),
             Color.Red
         )
