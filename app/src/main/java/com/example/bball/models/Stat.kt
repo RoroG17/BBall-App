@@ -92,7 +92,6 @@ data class Stat(
     private fun pct(made: Int, attempted: Int): Float =
         if (attempted > 0) 100f * made / attempted else 0f
 
-    // --- Calculs en getter (pas stockés) ---
     val points: Int
         get() = q1_tirs_2pts_reussis * 2 + q1_tirs_3pts_reussis * 3 + q1_lancers_francs_reussis +
                 q2_tirs_2pts_reussis * 2 + q2_tirs_3pts_reussis * 3 + q2_lancers_francs_reussis +

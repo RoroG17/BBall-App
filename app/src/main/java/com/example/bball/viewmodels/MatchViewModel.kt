@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bball.models.Match
 import com.example.bball.models.Season
-import com.example.bball.models.sampleSeason
 import com.example.bball.network.MatchApi
 import com.example.bball.network.SeasonApi
 import com.example.bball.session.SessionManager
@@ -33,7 +32,7 @@ class MatchViewModel(context: Context) : ViewModel() {
     val context = context
 
     var matches = listOf<Match>()
-    var season : Season by mutableStateOf(sampleSeason[3])
+    var season : Season? by mutableStateOf(null)
         private set
 
     init {
@@ -49,7 +48,13 @@ class MatchViewModel(context: Context) : ViewModel() {
 
                 val user = SessionManager(context).getUser()
                 val dataSeason = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
-                MatchUiState.Success(matches.filter{ match -> match.idSaison == season.idSeason }, dataSeason)
+
+                if (dataSeason.isEmpty()) {
+                    season = dataSeason.get(dataSeason.size - 1)
+                    MatchUiState.Success(matches.filter { match -> match.idSaison == season?.idSeason }, dataSeason)
+                } else {
+                    MatchUiState.Error("Aucune saison n'a été trouvée")
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("API_ERROR", "Erreur API: ${e.message}")
@@ -68,7 +73,7 @@ class MatchViewModel(context: Context) : ViewModel() {
     fun getMatchesBySeason() {
         try {
             val data = matches.filter { match ->
-                match.idSaison == season.idSeason
+                match.idSaison == season?.idSeason
             }
             if (data.isEmpty()) {
                 state = MatchUiState.Error("No data found")

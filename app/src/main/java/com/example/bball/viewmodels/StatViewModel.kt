@@ -22,18 +22,18 @@ class StatViewModel : ViewModel() {
         ColumnSpec("INT", 64.dp, { it.interceptions.toString() }),
         ColumnSpec("CTR", 64.dp, { it.contres.toString() }),
         ColumnSpec("BP", 64.dp, { it.ballonsPerdus.toString() }),
-        ColumnSpec("Fautes", 72.dp, { it.fautes.toString() }),
+        ColumnSpec("Faute", 72.dp, { it.fautes.toString() }),
     )
 
     val columnsMatch = listOf<ColumnSpec<Stat>>(
-        ColumnSpec("Joueur", 160.dp, { it.getPlayerName() }, alignCenter = false),
+        ColumnSpec("", 160.dp, { it.getPlayerName() }, alignCenter = false),
         ColumnSpec("PTS", 72.dp, { it.points.toString() }),
         ColumnSpec("PD", 64.dp, { it.passesDecisives.toString() }),
         ColumnSpec("REB", 72.dp, { it.rebonds.toString() }),
         ColumnSpec("INT", 64.dp, { it.interceptions.toString() }),
         ColumnSpec("CTR", 64.dp, { it.contres.toString() }),
         ColumnSpec("BP", 64.dp, { it.ballonsPerdus.toString() }),
-        ColumnSpec("Fautes", 72.dp, { it.fautes.toString() }),
+        ColumnSpec("Faute", 72.dp, { it.fautes.toString() }),
     )
 
     var selectedTab by mutableStateOf(StatScope.TOTAL)

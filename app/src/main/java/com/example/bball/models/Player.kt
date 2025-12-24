@@ -1,11 +1,8 @@
 package com.example.bball.models
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 data class Player (
     val licence : String,

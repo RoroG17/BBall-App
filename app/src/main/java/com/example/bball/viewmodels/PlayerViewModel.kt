@@ -10,9 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.bball.models.Player
 import com.example.bball.models.Season
 import com.example.bball.models.Stat
-import com.example.bball.models.sampleSeason
-import com.example.bball.network.SeasonApi
 import com.example.bball.network.PlayerApi
+import com.example.bball.network.SeasonApi
 import com.example.bball.session.SessionManager
 import kotlinx.coroutines.launch
 
@@ -40,7 +39,7 @@ class PlayerViewModel(context: Context) : ViewModel() {
     var state : PlayerUiState by mutableStateOf(PlayerUiState.Loading)
         private set
 
-    var season : Season by mutableStateOf(sampleSeason[3])
+    var season : Season? by mutableStateOf(null)
         private set
 
     var stats: List<Stat> = listOf()
@@ -75,9 +74,13 @@ class PlayerViewModel(context: Context) : ViewModel() {
                 player = response.joueur
                 stats = response.stats
                 seasons = SeasonApi.retrofitService.getSeasons(user?.joueur ?: "")
-                PlayerUiState.Success(response.joueur, seasons, stats.filter { stat ->
-                    stat.Id_Saison == season.idSeason
-                })
+                if (seasons.isEmpty()) {
+                    PlayerUiState.Error("Aucune saison n'a été trouvée")
+                } else {
+                    PlayerUiState.Success(response.joueur, seasons, stats.filter { stat ->
+                        stat.Id_Saison == season?.idSeason
+                    })
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 PlayerUiState.Error(e.message.toString())
@@ -111,7 +114,7 @@ class PlayerViewModel(context: Context) : ViewModel() {
         Log.d("test dropdown", "saison : ${state}")
         try {
             val data = stats.filter { stat ->
-                stat.Id_Saison == season.idSeason
+                stat.Id_Saison == season?.idSeason
             }
             if (data.isEmpty()) {
                 Log.d("test dropdown", "donnée vide")
