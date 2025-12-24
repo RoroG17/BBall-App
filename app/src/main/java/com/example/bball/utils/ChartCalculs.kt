@@ -4,8 +4,8 @@ import com.example.bball.models.Stat
 import com.example.bball.viewmodels.TypePieChart
 
 fun getTirReussi(stats: List<Stat>, type: TypePieChart): Float {
-    var tirsReussis : Int = 0
-    var tirsTentes : Int = 0
+    var tirsReussis : Int
+    var tirsTentes : Int
 
     when(type) {
         TypePieChart.SHOOT -> {
@@ -29,8 +29,8 @@ fun getTirReussi(stats: List<Stat>, type: TypePieChart): Float {
 }
 
 fun getTirManque(stats: List<Stat>, type: TypePieChart): Float {
-    var tirsRate : Int = 0
-    var tirsTentes : Int = 0
+    var tirsRate : Int
+    var tirsTentes : Int
 
     when(type) {
         TypePieChart.SHOOT -> {
@@ -50,28 +50,4 @@ fun getTirManque(stats: List<Stat>, type: TypePieChart): Float {
     if (tirsTentes == 0) return 0f
 
     return (tirsRate.toFloat() / tirsTentes.toFloat()) * 100f
-}
-
-fun averageStats(stats: List<Stat>): Map<String, Float> {
-    if (stats.isEmpty()) return emptyMap()
-
-    val size = stats.size.toFloat()
-
-    val pts = stats.sumOf { it.points }.toFloat() / size
-    val pd = stats.sumOf { it.passesDecisives }.toFloat() / size
-    val reb = stats.sumOf { it.rebonds }.toFloat() / size
-    val int = stats.sumOf { it.interceptions }.toFloat() / size
-    val con = stats.sumOf { it.contres }.toFloat() / size
-    val bp = stats.sumOf { it.ballonsPerdus }.toFloat() / size
-    val fautes = stats.sumOf { it.fautes }.toFloat() / size
-
-    return mapOf(
-        "Pts" to pts,
-        "PD" to pd,
-        "Reb" to reb,
-        "I" to int,
-        "C" to con,
-        "BP" to bp,
-        "F" to fautes
-    )
 }
