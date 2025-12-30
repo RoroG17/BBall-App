@@ -2,12 +2,16 @@ package com.example.bball.ui.components.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -17,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +37,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bball.R
+import com.example.bball.ui.components.card.PlayerCard
+import com.example.bball.ui.components.layout.AppTopBar
 import com.example.bball.ui.components.layout.LoadingComponent
 import com.example.bball.ui.components.layout.NavMenu
 import com.example.bball.ui.components.layout.SectionTitle
@@ -50,8 +57,67 @@ fun LoginScreen(
         is LoginState.InitPassword -> InitPasswordScreen(loginVM = loginVM)
         LoginState.Loading -> LoadingComponent()
         LoginState.Unconnect -> ConnectScreen(loginVM = loginVM)
+        LoginState.Admin -> AdminScreen(loginVM = loginVM)
     }
 }
+
+@Composable
+fun AdminScreen(
+    loginVM: LoginViewModel
+) {
+    val players = loginVM.players
+
+    Scaffold(
+        topBar = {
+            AppTopBar(
+                onLogoutClick = { loginVM.logout() }
+            )
+        },
+    ) { paddingValues ->
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+
+            if (players.isEmpty()) {
+                // Affichage centré si pas de joueurs
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Aucun joueur disponible",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(
+                        items = players
+                    ) { player ->
+                        PlayerCard(
+                            player = player,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            onClick = {
+                                loginVM.selectPlayer(player) // ← action ici
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
 fun ConnectScreen(loginVM: LoginViewModel) {

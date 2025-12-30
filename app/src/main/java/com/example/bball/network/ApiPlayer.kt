@@ -17,6 +17,9 @@ interface ApiPlayer {
     suspend fun getPlayerDetails(
         @Path("id") licence: String
     ): RequestResponse
+
+    @GET("joueurs")
+    suspend fun getAllPlayers() : PlayersResponse
 }
 
 object PlayerApi {
@@ -29,3 +32,8 @@ data class RequestResponse(
     val joueur : Player,
     val stats : List<Stat>
 )
+
+data class PlayersResponse(
+    val joueurs: List<Player>
+)
+

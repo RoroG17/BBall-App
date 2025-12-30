@@ -1,6 +1,7 @@
 package com.example.bball.ui.components.card
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,10 +31,13 @@ import com.example.bball.network.NETWORK_IMAGES_PLAYER
 @Composable
 fun PlayerCard(
     player: Player,
-    modifier: Modifier
+    modifier: Modifier,
+    onClick: (() -> Unit)? = null
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.then(
+            if (onClick != null) Modifier.clickable { onClick() } else Modifier
+        ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
