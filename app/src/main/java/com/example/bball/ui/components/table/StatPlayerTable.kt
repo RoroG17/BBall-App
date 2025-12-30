@@ -200,12 +200,7 @@ private fun StatScopeContent(
 
         StatLine(
             stringResource(R.string.stat_rebounds),
-            stringResource(
-                R.string.stat_rebounds_format,
-                data.rebOff,
-                data.rebDef,
-                data.rebTotal
-            )
+            data.rebTotal
         )
 
         StatLine(stringResource(R.string.stat_steals), data.inter)
@@ -214,6 +209,8 @@ private fun StatScopeContent(
         StatLine(stringResource(R.string.stat_fouls), data.fautes)
 
         SectionTitle(stringResource(R.string.stats_shots_title))
+
+        StatLine(stringResource(R.string.stat_points), data.points)
 
         StatLine(
             stringResource(R.string.stat_2pts),
@@ -235,12 +232,22 @@ private fun StatScopeContent(
             stringResource(R.string.stat_shots_format, data.fgIn, data.fgAtt, data.pctFG)
         )
 
+        SectionTitle("Rebonds")
+        StatLine(stringResource(R.string.stat_rebounds), data.rebTotal)
+        StatLine("Rebonds Offensifs", data.rebOff)
+        StatLine("Rebonds Défensifs", data.rebDef)
+
+        SectionTitle("Passes")
+        StatLine(stringResource(R.string.stat_assists), data.pd)
+        StatLine("Passes", "${data.passesReussis} / ${data.passesRates} (${"%.2f".format(data.pctPasses)}%)")
+
+
         if (scope == StatScope.TOTAL) {
             SectionTitle(stringResource(R.string.stats_advanced_title))
-            StatLine(stringResource(R.string.stat_negatives), data.negatives)
-            StatLine(stringResource(R.string.stat_ast_to), data.astTo)
-            StatLine(stringResource(R.string.stat_efficiency), data.efficacite)
+            StatLine("Points créés", "${data.createdPoints} pts")
+            StatLine("Ration Récupération / BP", "%.2f".format(data.ratioGetLost))
         }
+
     }
 }
 

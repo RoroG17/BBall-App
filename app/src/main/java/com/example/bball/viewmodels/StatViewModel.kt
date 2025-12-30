@@ -75,9 +75,18 @@ class StatViewModel : ViewModel() {
                     fgIn = fgIn,
                     fgAtt = fgAtt,
                     pctFG = pct(fgIn, fgAtt),
-                    negatives = stat.negatives,
-                    astTo = String.format("%.2f", stat.ratioAssistTurnover),
-                    efficacite = stat.efficacite
+                    createdPoints = stat.createdPoints,
+                    ratioGetLost = (stat.rebondsDef.toFloat() + stat.interceptions.toFloat()) / (1F + stat.ballonsPerdus.toFloat()),
+                    efficacite = stat.efficacite,
+                    passesReussis = stat.passesReussisTotal,
+                    passesRates = stat.passesRatesTotal,
+                    pctPasses = if (stat.passesReussisTotal + stat.passesRatesTotal > 0) {
+                        stat.passesReussisTotal.toFloat() /
+                                (stat.passesReussisTotal + stat.passesRatesTotal).toFloat() * 100f
+                    } else {
+                        0f
+                    }
+
                 )
             }
             StatScope.Q1, StatScope.Q2, StatScope.Q3, StatScope.Q4 -> {
@@ -95,7 +104,15 @@ class StatViewModel : ViewModel() {
                         t3In = stat.q1_tirs_3pts_reussis,
                         t3Miss = stat.q1_tirs_3pts_manques,
                         lfIn = stat.q1_lancers_francs_reussis,
-                        lfMiss = stat.q1_lancers_francs_rates
+                        lfMiss = stat.q1_lancers_francs_rates,
+                        passIn =  stat.q1_passes_reussies,
+                        passMiss = stat.q1_passes_rates,
+                        pctPass = if (stat.q1_passes_reussies + stat.q1_passes_rates > 0) {
+                            stat.q1_passes_reussies.toFloat() /
+                                    (stat.q1_passes_reussies + stat.q1_passes_rates).toFloat() * 100f
+                        } else {
+                            0f
+                        }
                     )
                     StatScope.Q2 -> Quarter(
                         pd = stat.q2_passes_decisives,
@@ -110,7 +127,15 @@ class StatViewModel : ViewModel() {
                         t3In = stat.q2_tirs_3pts_reussis,
                         t3Miss = stat.q2_tirs_3pts_manques,
                         lfIn = stat.q2_lancers_francs_reussis,
-                        lfMiss = stat.q2_lancers_francs_rates
+                        lfMiss = stat.q2_lancers_francs_rates,
+                        passIn =  stat.q2_passes_reussies,
+                        passMiss = stat.q2_passes_rates,
+                        pctPass = if (stat.q2_passes_reussies + stat.q2_passes_rates > 0) {
+                            stat.q2_passes_reussies.toFloat() /
+                                    (stat.q2_passes_reussies + stat.q2_passes_rates).toFloat() * 100f
+                        } else {
+                            0f
+                        }
                     )
                     StatScope.Q3 -> Quarter(
                         pd = stat.q3_passes_decisives,
@@ -125,7 +150,15 @@ class StatViewModel : ViewModel() {
                         t3In = stat.q3_tirs_3pts_reussis,
                         t3Miss = stat.q3_tirs_3pts_manques,
                         lfIn = stat.q3_lancers_francs_reussis,
-                        lfMiss = stat.q3_lancers_francs_rates
+                        lfMiss = stat.q3_lancers_francs_rates,
+                        passIn =  stat.q3_passes_reussies,
+                        passMiss = stat.q3_passes_rates,
+                        pctPass = if (stat.q3_passes_reussies + stat.q3_passes_rates > 0) {
+                            stat.q3_passes_reussies.toFloat() /
+                                    (stat.q3_passes_reussies + stat.q3_passes_rates).toFloat() * 100f
+                        } else {
+                            0f
+                        }
                     )
                     StatScope.Q4 -> Quarter(
                         pd = stat.q4_passes_decisives,
@@ -140,7 +173,15 @@ class StatViewModel : ViewModel() {
                         t3In = stat.q4_tirs_3pts_reussis,
                         t3Miss = stat.q4_tirs_3pts_manques,
                         lfIn = stat.q4_lancers_francs_reussis,
-                        lfMiss = stat.q4_lancers_francs_rates
+                        lfMiss = stat.q4_lancers_francs_rates,
+                        passIn =  stat.q4_passes_reussies,
+                        passMiss = stat.q4_passes_rates,
+                        pctPass = if (stat.q4_passes_reussies + stat.q4_passes_rates > 0) {
+                            stat.q4_passes_reussies.toFloat() /
+                                    (stat.q4_passes_reussies + stat.q4_passes_rates).toFloat() * 100f
+                        } else {
+                            0f
+                        }
                     )
                     else -> error("should not happen")
                 }
@@ -167,6 +208,9 @@ class StatViewModel : ViewModel() {
                     t3In = q.t3In, t3Att = t3Att, pct3 = pct(q.t3In, t3Att),
                     lfIn = q.lfIn, lfAtt = lfAtt, pctLF = pct(q.lfIn, lfAtt),
                     fgIn = fgIn, fgAtt = fgAtt, pctFG = pct(fgIn, fgAtt),
+                    passesReussis = q.passIn,
+                    passesRates = q.passMiss,
+                    pctPasses = q.pctPass,
                 )
             }
         }

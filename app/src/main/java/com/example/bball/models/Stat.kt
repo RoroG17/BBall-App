@@ -170,11 +170,23 @@ data class Stat(
     val tirsReussisTotal: Int
         get() = tirs2Reussis + tirs3Reussis
 
+    val passesReussisTotal : Int
+        get() = q1_passes_reussies + q2_passes_reussies + q3_passes_reussies + q4_passes_reussies
+
+    val passesRatesTotal : Int
+        get() = q1_passes_rates + q2_passes_rates + q3_passes_rates + q4_passes_rates
+
+    val pctPassesGlobal : Float
+        get() = (passesReussisTotal / (passesRatesTotal + passesReussisTotal) * 100).toFloat()
+
     val pctTirGlobal: Float
         get() = pct(tirsReussisTotal, tirsTentesTotal)
 
     val negatives: Int
         get() = ballonsPerdus + fautes
+
+    val createdPoints: Int
+        get() = points + passesDecisives * 2
 
     val ratioAssistTurnover: Float
         get() = if (ballonsPerdus > 0) passesDecisives.toFloat() / ballonsPerdus else passesDecisives.toFloat()
@@ -197,8 +209,9 @@ data class ScopedStats(
     val t3In: Int, val t3Att: Int, val pct3: Int,
     val lfIn: Int, val lfAtt: Int, val pctLF: Int,
     val fgIn: Int, val fgAtt: Int, val pctFG: Int,
-    val negatives: Int = 0,
-    val astTo: String = "—",
+    val passesReussis: Int, val passesRates: Int, val pctPasses: Float,
+    val createdPoints: Int = 0,
+    val ratioGetLost: Float = 0F,
     val efficacite: Int = 0,
 )
 
@@ -215,5 +228,8 @@ data class Quarter(
     val t3In: Int,
     val t3Miss: Int,
     val lfIn: Int,
-    val lfMiss: Int
+    val lfMiss: Int,
+    val passIn: Int,
+    val passMiss: Int,
+    val pctPass: Float
 )
