@@ -1,6 +1,5 @@
 package com.example.bball.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -39,11 +38,28 @@ class LoginViewModel(
 
     var state: LoginState by mutableStateOf(LoginState.Unconnect)
         private set
+    
+    var searchQuery by mutableStateOf("")
+
+    val filteredPlayers: List<Player>
+        get() = if (searchQuery.isBlank()) {
+            players
+        } else {
+            players.filter { player ->
+                player.name.contains(searchQuery, ignoreCase = true) ||
+                        player.firstName.contains(searchQuery, ignoreCase = true)
+            }
+        }
 
     init {
         sessionManager.getUser()?.let { user ->
-            state = LoginState.Connect(user)
+            state = if (user.username == "admin") {
+                LoginState.Admin
+            } else {
+                LoginState.Connect(user)
+            }
         }
+        initPlayers()
     }
 
     fun connect() {
@@ -71,9 +87,11 @@ class LoginViewModel(
                         val user = response.body()?.user
                         if (user != null) {
                             if (username == "admin") {
-                                Log.d("test API", user.username)
-                                players = PlayerApi.retrofitService.getAllPlayers().joueurs
-                                Log.d("test API", players.size.toString())
+                                val user = User(
+                                    username = "admin",
+                                    joueur = ""
+                                )
+                                sessionManager.saveUser(user)
                                 LoginState.Admin
                             } else {
                                 sessionManager.saveUser(user)
@@ -98,6 +116,12 @@ class LoginViewModel(
             } catch (e: Exception) {
                 state = LoginState.Error("Erreur réseau : ${e.localizedMessage}")
             }
+        }
+    }
+
+    fun initPlayers() {
+        viewModelScope.launch {
+            players = PlayerApi.retrofitService.getAllPlayers().joueurs
         }
     }
 

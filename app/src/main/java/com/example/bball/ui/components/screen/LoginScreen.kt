@@ -65,8 +65,6 @@ fun LoginScreen(
 fun AdminScreen(
     loginVM: LoginViewModel
 ) {
-    val players = loginVM.players
-
     Scaffold(
         topBar = {
             AppTopBar(
@@ -75,40 +73,44 @@ fun AdminScreen(
         },
     ) { paddingValues ->
 
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            OutlinedTextField(
+                value = loginVM.searchQuery,
+                onValueChange = { loginVM.searchQuery = it },
+                label = { Text("Rechercher un joueur") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                singleLine = true
+            )
 
-            if (players.isEmpty()) {
-                // Affichage centré si pas de joueurs
+            if (loginVM.filteredPlayers.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Aucun joueur disponible",
+                        text = "Aucun joueur trouvé",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             } else {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(
-                        items = players
-                    ) { player ->
+                    items(loginVM.filteredPlayers) { player ->
                         PlayerCard(
                             player = player,
-                            modifier = Modifier
-                                .fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             onClick = {
-                                loginVM.selectPlayer(player) // ← action ici
+                                loginVM.selectPlayer(player)
                             }
                         )
                     }
@@ -117,6 +119,7 @@ fun AdminScreen(
         }
     }
 }
+
 
 
 @Composable
